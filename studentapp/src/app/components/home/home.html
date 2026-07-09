@@ -1,0 +1,426 @@
+<div class="navbar-container">
+
+    <p-toolbar>
+
+        <!-- Logo -->
+        <ng-template #start>
+
+            <div class="logo">
+                📘 EduPortal
+            </div>
+
+        </ng-template>
+
+        <!-- Navigation -->
+        <ng-template #center>
+
+            <div class="nav-menu">
+
+                <button pButton text class="nav-btn" [routerLink]="routes.home">
+                    Home
+                </button>
+
+                <button pButton text class="nav-btn">
+                    Courses
+                </button>
+
+                <button pButton text class="nav-btn">
+                    About Us
+                </button>
+
+                <button pButton text class="nav-btn">
+                    Success Stories
+                </button>
+
+                <button pButton text class="nav-btn">
+                    Blog
+                </button>
+
+                <button pButton text class="nav-btn">
+                    Contact
+                </button>
+
+            </div>
+
+        </ng-template>
+
+        <!-- Right Side -->
+        <ng-template #end>
+
+            <div class="nav-right">
+
+                <span class="p-input-icon-left">
+
+                    <i class="pi pi-search"></i>
+
+                    <input
+                        pInputText
+                        type="text"
+                        placeholder="Search Courses">
+
+                </span>
+
+                <button
+                    pButton
+                    outlined
+                    class="login-btn"
+                    [routerLink]="routes.login">
+                    Login
+                </button>
+
+                <button
+                    pButton
+                    class="register-btn"
+                    [routerLink]="routes.register">
+                    Register
+                </button>
+
+            </div>
+
+        </ng-template>
+
+    </p-toolbar>
+
+</div>
+
+<!-- ================= Hero ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-tag">
+            🚀 Start Learning Today
+        </div>
+
+        <h1>
+            Learn Without
+            <span>Limits</span>
+        </h1>
+
+        <p>
+            Empower your future with expert-led courses, hands-on projects,
+            and industry-ready skills. Start learning today and build the
+            career you've always dreamed of.
+        </p>
+
+        <!-- Hero Buttons -->
+
+        <div class="hero-buttons">
+
+            <button
+                pButton
+                class="explore-btn">
+
+                Explore Courses
+
+            </button>
+
+            <button
+                pButton
+                outlined
+                class="demo-btn">
+
+                <i class="pi pi-play"></i>
+
+                Watch Demo
+
+            </button>
+
+        </div>
+
+        <!-- Statistics -->
+
+        <div class="education-info">
+
+            <div class="info-card">
+
+                <h3>1000+</h3>
+
+                <span>Online Courses</span>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>500+</h3>
+
+                <span>Expert Instructors</span>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>10K+</h3>
+
+                <span>Students</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Right Image -->
+
+   <div class="hero-image">
+
+    <img
+        src="assets/images/edu.jpg"
+        alt="Education">
+
+    <!-- Students -->
+
+    <div class="floating-card students-card">
+
+        <i class="pi pi-users"></i>
+
+        <div>
+
+            <h4>10K+</h4>
+
+            <span>Happy Students</span>
+
+        </div>
+
+    </div>
+
+    <!-- Courses -->
+
+    <div class="floating-card course-card">
+
+        <i class="pi pi-book"></i>
+
+        <div>
+
+            <h4>1000+</h4>
+
+            <span>Courses</span>
+
+        </div>
+
+    </div>
+
+    <!-- Rating -->
+
+    <div class="floating-card rating-card">
+
+        <i class="pi pi-star-fill"></i>
+
+        <div>
+
+            <h4>4.9</h4>
+
+            <span>Course Rating</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+
+
+
+
+
+<section class="why-section">
+
+    <div class="why-left">
+
+        <div class="hero-tag">
+            🚀 Why Choose Us
+        </div>
+
+        <h2>Everything You Need To Succeed</h2>
+
+        <p>
+            We provide world-class education with expert mentors,
+            hands-on projects and career-focused learning paths to
+            help you achieve your goals.
+        </p>
+
+    </div>
+
+    <div class="why-cards">
+
+      <p-card class="feature-card">
+
+    <div class="feature-icon">
+        <i class="pi pi-book"></i>
+    </div>
+
+    <h3>1000+ Courses</h3>
+
+    <p>
+        Learn from beginner to advanced.
+    </p>
+
+</p-card>
+
+        <p-card class="feature-card">
+
+            <i class="pi pi-users feature-icon"></i>
+
+            <h3>Expert Mentors</h3>
+
+            <p>
+                Learn directly from experienced industry professionals.
+            </p>
+
+        </p-card>
+
+        <p-card class="feature-card">
+
+            <i class="pi pi-briefcase feature-icon"></i>
+
+            <h3>Career Support</h3>
+
+            <p>
+                Resume building, interview preparation and placement help.
+            </p>
+
+        </p-card>
+
+        <p-card class="feature-card">
+
+            <i class="pi pi-verified feature-icon"></i>
+
+            <h3>Certified Programs</h3>
+
+            <p>
+                Earn certificates recognized by leading organizations.
+            </p>
+
+        </p-card>
+
+    </div>
+
+</section>
+
+
+
+
+
+<!-- ================= Popular Courses ================= -->
+
+<section class="courses-section">
+
+    <div class="section-title">
+
+        <div class="hero-tag">
+            📚 Our Courses
+        </div>
+
+        <h2>Popular Courses</h2>
+
+        <p>
+            Explore our most popular courses designed by industry experts.
+        </p>
+
+    </div>
+
+    <div class="courses-grid">
+
+        <p-card class="course-card">
+
+            <!-- <img
+                src="assets/images/course1.jpg"
+                alt="Angular"> -->
+
+            <div class="course-content">
+
+                <span class="category">Web Development</span>
+
+                <h3>Angular 20 Complete Course</h3>
+
+                <p>
+                    Learn Angular from beginner to advanced with real-world projects.
+                </p>
+
+                <div class="course-footer">
+
+                    <span class="price">₹4,999</span>
+
+                    <button
+                        pButton
+                        class="course-btn">
+                        Enroll Now
+                    </button>
+
+                </div>
+
+            </div>
+
+        </p-card>
+
+        <p-card class="course-card">
+
+            <!-- <img
+                src="assets/images/course2.jpg"
+                alt="Java"> -->
+
+            <div class="course-content">
+
+                <span class="category">Programming</span>
+
+                <h3>Java Full Stack</h3>
+
+                <p>
+                    Master Java, Spring Boot and modern backend development.
+                </p>
+
+                <div class="course-footer">
+
+                    <span class="price">₹5,999</span>
+
+                    <button
+                        pButton
+                        class="course-btn">
+                        Enroll Now
+                    </button>
+
+                </div>
+
+            </div>
+
+        </p-card>
+
+        <p-card class="course-card">
+
+            <!-- <img
+                src="assets/images/course3.jpg"
+                alt="Python"> -->
+
+            <div class="course-content">
+
+                <span class="category">AI & Python</span>
+
+                <h3>Python with AI</h3>
+
+                <p>
+                    Build AI-powered applications using Python and modern tools.
+                </p>
+
+                <div class="course-footer">
+
+                    <span class="price">₹6,499</span>
+
+                    <button
+                        pButton
+                        class="course-btn">
+                        Enroll Now
+                    </button>
+
+                </div>
+
+            </div>
+
+        </p-card>
+
+    </div>
+
+</section>

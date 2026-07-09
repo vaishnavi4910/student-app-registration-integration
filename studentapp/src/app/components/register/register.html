@@ -1,0 +1,507 @@
+<!-- ================= Left Panel ================= -->
+ 
+<div class="register-page">
+<div class="left-panel">
+
+    <div class="background-circle"></div>
+
+    <div class="dots dots-top"></div>
+    <div class="dots dots-bottom"></div>
+
+    <div class="left-content">
+
+        <!-- Badge -->
+        <div class="badge">
+            <i class="pi pi-send"></i>
+            <span>Start Your Learning Journey</span>
+        </div>
+
+        <!-- Heading -->
+        <h1>
+            Create Your Account
+            <br>
+            <span>and Get Started</span>
+        </h1>
+
+        <!-- Description -->
+        <p class="description">
+            Join thousands of learners around the world and
+            unlock your potential with EduPortal.
+        </p>
+
+        <!-- Features -->
+
+        <div class="feature-list">
+
+            <div class="feature">
+
+                <div class="icon-box">
+                    <i class="pi pi-graduation-cap"></i>
+                </div>
+
+                <div>
+
+                    <h4>Expert-Led Courses</h4>
+
+                    <p>
+                        Learn from industry experts
+                        and professionals.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="feature">
+
+                <div class="icon-box">
+                    <i class="pi pi-book"></i>
+                </div>
+
+                <div>
+
+                    <h4>Flexible Learning</h4>
+
+                    <p>
+                        Study anytime, anywhere
+                        at your own pace.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="feature">
+
+                <div class="icon-box">
+                    <i class="pi pi-chart-line"></i>
+                </div>
+
+                <div>
+
+                    <h4>Track Your Progress</h4>
+
+                    <p>
+                        Monitor your learning and
+                        achievements.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Illustration -->
+
+        <div class="illustration-wrapper">
+
+            
+        <img
+        src="assets/images/register-illustration.png"
+        class="illustration"
+        alt="Education">
+
+
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- Right Side -->
+    <div class="right-panel">
+
+        <p-card styleClass="register-card">
+
+            <div class="card-header">
+
+                <h2>Student Registration</h2>
+
+                <p>
+                    Fill in your information to create your account.
+                </p>
+
+            </div>
+
+            <form
+                [formGroup]="studentForm"
+                (ngSubmit)="onSubmit()">
+
+                <div class="form-grid">
+
+                    <!-- First Name -->
+
+                    <div class="field">
+
+                        <label>First Name</label>
+
+                        <input
+                            pInputText
+                            type="text"
+                            formControlName="firstName"
+                            placeholder="Enter first name">
+
+                        @if(studentForm.get('firstName')?.touched &&
+                        studentForm.get('firstName')?.invalid){
+
+                        <small class="error">
+                            First name is required.
+                        </small>
+
+                        }
+
+                    </div>
+
+                    <!-- Last Name -->
+
+                    <div class="field">
+
+                        <label>Last Name</label>
+
+                        <input
+                            pInputText
+                            type="text"
+                            formControlName="lastName"
+                            placeholder="Enter last name">
+
+                        @if(studentForm.get('lastName')?.touched &&
+                        studentForm.get('lastName')?.invalid){
+
+                        <small class="error">
+                            Last name is required.
+                        </small>
+
+                        }
+
+                    </div>
+
+                    <!-- DOB -->
+
+                    <div class="field">
+
+                        <label>Date of Birth</label>
+
+                        <p-datepicker
+                            formControlName="dob"
+                            inputId="dob"
+                            dateFormat="dd/mm/yy"
+                            styleClass="w-full">
+                        </p-datepicker>
+
+                        @if(studentForm.get('dob')?.touched &&
+                        studentForm.get('dob')?.invalid){
+
+                        <small class="error">
+                            Date of Birth is required.
+                        </small>
+
+                        }
+
+                    </div>
+
+                    <!-- Gender -->
+
+                    <div class="field">
+
+                        <label>Gender</label>
+
+                        <div class="gender-group">
+
+                            <div class="gender-item">
+
+                                <p-radiobutton
+                                    name="gender"
+                                    value="Male"
+                                    formControlName="gender">
+                                </p-radiobutton>
+
+                                <label>Male</label>
+
+                            </div>
+
+                            <div class="gender-item">
+
+                                <p-radiobutton
+                                    name="gender"
+                                    value="Female"
+                                    formControlName="gender">
+                                </p-radiobutton>
+
+                                <label>Female</label>
+
+                            </div>
+
+                            <div class="gender-item">
+
+                                <p-radiobutton
+                                    name="gender"
+                                    value="Others"
+                                    formControlName="gender">
+                                </p-radiobutton>
+
+                                <label>Others</label>
+
+                            </div>
+
+                        </div>
+
+                        @if(studentForm.get('gender')?.touched &&
+                        studentForm.get('gender')?.invalid){
+
+                        <small class="error">
+                            Please select your gender.
+                        </small>
+
+                        }
+
+                    </div>
+
+                    <!-- Country -->
+
+                    <div class="field">
+
+                        <label>Country</label>
+
+                       <p-select
+                            formControlName="country"
+                            [options]="countries"
+                            optionLabel="countryName"
+                            optionValue="id"
+                            placeholder="Select Country"
+                            (onChange)="onCountryChange()">
+                        </p-select>
+                    </div>
+
+                    <!-- State -->
+
+                    <div class="field">
+
+                        <label>State</label>
+
+                    <p-select
+                        formControlName="state"
+                        [options]="states"
+                        optionLabel="stateName"
+                        optionValue="id"
+                        placeholder="Select State"
+                        (onChange)="onStateChange()">
+                    </p-select>
+
+                    </div>
+
+                                            <!-- City -->
+
+                    <div class="field">
+
+                        <label>City</label>
+
+                    <p-select
+                        formControlName="city"
+                        [options]="cities"
+                        optionLabel="cityName"
+                        optionValue="id"
+                        placeholder="Select City">
+                    </p-select>
+
+                        @if(studentForm.get('city')?.touched &&
+                        studentForm.get('city')?.invalid){
+
+                        <small class="error">
+                            City is required.
+                        </small>
+
+                        }
+
+                    </div>
+
+                    <!-- Zip Code -->
+
+                    <div class="field">
+
+                        <label>Zip Code</label>
+
+                        <input
+                            pInputText
+                            type="text"
+                            formControlName="zipCode"
+                            placeholder="Enter Zip Code">
+
+                        @if(studentForm.get('zipCode')?.touched &&
+                        studentForm.get('zipCode')?.invalid){
+
+                        <small class="error">
+                            Enter a valid Zip Code.
+                        </small>
+
+                        }
+
+                    </div>
+
+                    <!-- Email -->
+
+                    <div class="field">
+
+                        <label>Email</label>
+
+                        <input
+                            pInputText
+                            type="email"
+                            formControlName="email"
+                            placeholder="example@gmail.com">
+
+                        @if(studentForm.get('email')?.touched &&
+                        studentForm.get('email')?.invalid){
+
+                        <small class="error">
+                            Enter a valid Gmail address.
+                        </small>
+
+                        }
+
+                    </div>
+
+                    <!-- Mobile -->
+
+                    <div class="field">
+
+                        <label>Mobile Number</label>
+
+                        <input
+                            pInputText
+                            type="text"
+                            formControlName="mobile"
+                            placeholder="10-digit mobile number">
+
+                        @if(studentForm.get('mobile')?.touched &&
+                        studentForm.get('mobile')?.invalid){
+
+                        <small class="error">
+                            Enter a valid mobile number.
+                        </small>
+
+                        }
+
+                    </div>
+
+                    <!-- Course -->
+
+                    <div class="field">
+
+                        <label>Course</label>
+
+                        
+                                        <p-select
+                        formControlName="course"
+                        [options]="courseList"
+                        optionLabel="label"
+                        optionValue="code"
+                        placeholder="Select Course"
+                        (onChange)="onCourseChange()">
+                    </p-select>
+
+                        @if(studentForm.get('course')?.touched &&
+                        studentForm.get('course')?.invalid){
+
+                        <small class="error">
+                            Course is required.
+                        </small>
+
+                        }
+
+                    </div>
+
+                    <!-- Branch -->
+
+                    <div class="field">
+
+                        <label>Branch</label>
+
+                                                <p-select
+                            formControlName="branch"
+                            [options]="branchList"
+                            optionLabel="label"
+                            optionValue="code"
+                            placeholder="Select Branch">
+                        </p-select>
+                   
+                        @if(studentForm.get('branch')?.touched &&
+                        studentForm.get('branch')?.invalid){
+
+                        <small class="error">
+                            Branch is required.
+                        </small>
+
+                        }
+
+                    </div>
+
+                    <!-- Upload File -->
+
+                    <div class="field full-width">
+
+                        <label>Upload Document</label>
+
+                        <input
+                            type="file"
+                            class="file-upload"
+                            (change)="onFileSelect($event)">
+
+                        @if(studentForm.get('file')?.touched &&
+                        studentForm.get('file')?.invalid){
+
+                        <small class="error">
+                            Please upload a PDF, DOC or DOCX file.
+                        </small>
+
+                        }
+
+                    </div>
+
+                </div>
+
+                <div class="button-group">
+
+                    <button
+                        pButton
+                        type="submit"
+                        label="Create Account"
+                        icon="pi pi-user-plus"
+                        class="register-btn"
+                        [disabled]="studentForm.invalid">
+                    </button>
+
+                    <button
+                        pButton
+                        type="button"
+                        label="Reset"
+                        severity="secondary"
+                        outlined="true"
+                        icon="pi pi-refresh"
+                        (click)="onReset()">
+                    </button>
+
+                </div>
+
+                <p-divider></p-divider>
+
+                <div class="login-text">
+
+                    Already have an account?
+
+                    <a
+                        routerLink="/login">
+                        Login
+                    </a>
+
+                </div>
+
+            </form>
+
+        </p-card>
+
+    </div>
+
+</div>
+
+                  

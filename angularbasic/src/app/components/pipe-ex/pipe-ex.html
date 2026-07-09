@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-3">
+        <p>{{courseName}}</p>
+        <p>after upper case= > {{courseName | uppercase}}</p>
+        <p>lower case = >{{courseDuration | lowercase}}</p>
+        <p>title case => {{courseDuration | titlecase}}</p>
+
+    </div>
+    <div>
+        <p>{{currentDate | date:'dd-MM-yyyy'}}</p>
+        <p>{{currentDate | date:'dd/MMMM/yy'}}</p>
+
+    </div>
+    <div class="col-3">
+        <p>{{rollNoList}}</p>
+        <p>after slice {{rollNoList | slice:0:2}}</p>
+
+    </div>
+</div>
+<div>
+   <p> {{studentObj}} </p>
+   <p>{{studentObj | json}}</p>
+</div>
+
+<div>
+    <p>{{courseFee}}</p>
+    <p>{{courseFee | currency:'JPY'}}</p>
+    <p>{{courseFee | currency:'JPY':'code'}}</p>
+    <p>{{orderValue}}</p>
+    <p>{{orderValue | currency:'JPY':'symbol':'2.1-3'}}</p>
+        <p>{{orderValue | currency:'JPY':'symbol':'2.1'}}</p>
+
+</div>
+
+
+<div>
+
+<p>{{12.56789 | number: '3.2-8'}}</p>
+
+<p>{{12.56789 | percent:'3.2-5'}}</p>
+</div>

@@ -1,0 +1,62 @@
+<p>data-binding works!</p>
+
+<table>
+
+<tr>
+    <td>{{courseName}}</td>
+    <td>{{productPrice}}</td>
+</tr>
+
+<tr>
+    <td>
+        <input type="text" value="{{courseName}}">
+    </td>
+
+    <td>
+<input [type]="inputType" [maxLength]="maxLength" [minLength]="minChar">
+</td>
+<td>
+    <p [class]="myClassName">this is dat binding para</p>
+</td>
+
+</tr>
+
+
+
+<tr>
+    <td>
+        <button (click)="showWelcomeMessage()">show messageee alert</button>
+    </td>
+</tr>
+<td>
+        <button (click)="changeCourseName()">changes  value</button>
+    </td>
+   <td>
+
+    <select (change)="onCityChange()" >
+        <option value="">pune</option>
+        <option value="">nagpur</option>
+        <option value="">mumbai</option>
+
+    </select>
+   </td>
+
+
+
+   <tr>
+   <td>
+
+    <input type="text">
+   </td>
+   </tr>
+
+
+
+   <tr>
+    <td>
+        <input type="text" [(ngModel)]="courseName">
+    </td>
+   </tr>
+    
+
+</table>

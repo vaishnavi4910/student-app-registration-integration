@@ -1,0 +1,238 @@
+<div class="row">
+
+  <!-- User List -->
+  <div class="col-7">
+    <div class="card">
+      <div class="card-header bg-success text-white">
+        User List
+      </div>
+
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Sr No</th>
+              <th>Email Id</th>
+              <th>Full Name</th>
+              <th>Mobile No</th>
+              <th>Password</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (item of userList; track $index) {
+              <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ item.emailId }}</td>
+                <td>{{ item.fullName }}</td>
+                <td>{{ item.mobileNo }}</td>
+                <td>{{ item.password }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-primary me-2">
+                    Edit
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn btn-danger">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Form -->
+  <div class="col-5">
+    <div class="card">
+      <div class="card-header bg-success text-white">
+        New User
+      </div>
+
+      <div class="card-body">
+
+        <form [formGroup]="userForm">
+
+          <!-- Email & Full Name -->
+          <div class="row">
+            <div class="col-6">
+
+              <label>Email Id</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="emailId">
+
+              @if (userForm.controls['emailId'].invalid &&
+                   (userForm.controls['emailId'].touched || userForm.controls['emailId'].dirty)) {
+
+                <div class="text-danger">
+
+                  @if (userForm.controls['emailId'].errors?.['required']) {
+                    <small>Email Id is required</small>
+                  }
+@if (userForm.controls['emailId'].errors?.['pattern']) {
+  <small>Email Id is not valid</small>
+}
+
+                </div>
+              }
+
+            </div>
+
+            <div class="col-6">
+
+              <label>Full Name</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="fullName">
+
+            </div>
+          </div>
+
+          <!-- Mobile & Password -->
+          <div class="row mt-3">
+
+            <div class="col-6">
+
+              <label>Mobile No</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="mobileNo">
+
+            </div>
+
+            <div class="col-6">
+
+              <label>Password</label>
+
+              <input
+                type="password"
+                class="form-control"
+                formControlName="password">
+
+              @if (userForm.controls['password'].invalid &&
+                   (userForm.controls['password'].touched || userForm.controls['password'].dirty)) {
+
+                <div class="text-danger">
+
+                  @if (userForm.controls['password'].errors?.['required']) {
+                    <small>Password is required</small>
+                  }
+
+                  @if (userForm.controls['password'].errors?.['minlength'] || userForm.controls['password'].errors?.['maxlength']) {
+                    <small>Password must be between 4 and 8 characters long</small>
+                  }
+
+                </div>
+              }
+
+            </div>
+
+          </div>
+
+<!-- Skills -->
+<div class="row mt-3">
+
+  <div class="col-12">
+
+    <label class="fw-bold">Skills</label>
+
+    <div formArrayName="skills">
+
+      @for(skill of skills.controls; track $index) {
+
+        <div class="row mt-2">
+
+          <div class="col-8">
+
+            <input
+              type="text"
+              class="form-control"
+              [formControlName]="$index"
+              placeholder="Enter Skill">
+
+          </div>
+
+          <div class="col-4">
+
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="removeSkill($index)">
+              Remove
+            </button>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-primary mt-2"
+      (click)="addSkill()">
+
+      Add Skill
+
+    </button>
+
+  </div>
+
+</div>
+
+
+
+          <!-- Buttons -->
+          <div class="row pt-3">
+
+            <div class="col-4">
+              <button
+                type="button"
+                class="btn btn-secondary w-100">
+                Reset
+              </button>
+            </div>
+
+            <div class="col-4">
+              <button
+                type="button"
+                class="btn btn-success w-100"
+                [disabled]="userForm.invalid"
+                (click)="onSaveUser()">
+                Save
+              </button>
+            </div>
+
+            <div class="col-4">
+              <button
+                type="button"
+                class="btn btn-warning w-100">
+                Update
+              </button>
+            </div>
+
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+</div>

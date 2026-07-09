@@ -1,0 +1,188 @@
+<div class="login-container">
+
+    <div class="left-section">
+
+        <div class="logo">
+            <i class="pi pi-graduation-cap"></i>
+            <span>EduPortal</span>
+        </div>
+
+        <span class="tagline">
+            🚀 Empowering Learners Worldwide
+        </span>
+
+        <h1>
+            Learn Without Limits,
+            <br>
+            Achieve <span>Your Dreams</span>
+        </h1>
+
+        <p class="description">
+            Join thousands of students learning from expert instructors and build
+            the skills needed to achieve your goals.
+        </p>
+
+        <div class="feature-list">
+
+            <div class="feature-item">
+                <i class="pi pi-book"></i>
+
+                <div>
+                    <h4>Expert-Led Courses</h4>
+                    <p>Learn from experienced instructors.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <i class="pi pi-clock"></i>
+
+                <div>
+                    <h4>Flexible Learning</h4>
+                    <p>Study whenever it suits your schedule.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <i class="pi pi-chart-line"></i>
+
+                <div>
+                    <h4>Track Progress</h4>
+                    <p>Stay motivated and monitor your achievements.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="student-image">
+            <!-- <img
+                src="assets/images/student.png"
+                alt="Student"> -->
+        </div>
+
+        <div class="stats">
+
+            <div class="stat-box">
+                <h2>1000+</h2>
+                <span>Courses</span>
+            </div>
+
+            <div class="stat-box">
+                <h2>10K+</h2>
+                <span>Students</span>
+            </div>
+
+            <div class="stat-box">
+                <h2>500+</h2>
+                <span>Instructors</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="right-section">
+
+        <p-card>
+
+            <h2>Welcome Back! 👋</h2>
+
+            <p class="sub-title">
+                Sign in to continue your learning journey.
+            </p>
+
+            <form
+                [formGroup]="loginForm"
+                (ngSubmit)="login()">
+
+                <div class="field">
+
+                    <label>Email Address</label>
+
+                    <input
+                        pInputText
+                        type="email"
+                        formControlName="email"
+                        placeholder="Enter your email">
+
+                </div>
+
+                <div class="field">
+
+                    <label>Password</label>
+
+                    <p-password
+                        formControlName="password"
+                        [feedback]="false"
+                        [toggleMask]="true"
+                        placeholder="Enter your password"
+                        styleClass="w-full">
+                    </p-password>
+
+                </div>
+
+                <div class="options">
+
+                    <div class="remember">
+
+                        <p-checkbox
+                            formControlName="remember"
+                            binary="true">
+                        </p-checkbox>
+
+                        <label>Remember Me</label>
+
+                    </div>
+
+                    <a href="#">Forgot Password?</a>
+
+                </div>
+
+                <button
+                    pButton
+                    type="submit"
+                    label="Login"
+                    class="login-btn w-full">
+                </button>
+
+            </form>
+
+            <p-divider align="center">
+                Or continue with
+            </p-divider>
+
+            <button
+                pButton
+                type="button"
+                class="social-btn p-button-outlined">
+
+                <!-- <img
+                    src="assets/icons/google.png"
+                    alt="Google"> -->
+
+                <span>Continue with Google</span>
+
+            </button>
+
+            <button
+                pButton
+                type="button"
+                class="social-btn p-button-outlined">
+
+                <!-- <img
+                    src="assets/icons/microsoft.png"
+                    alt="Microsoft"> -->
+
+                <span>Continue with Microsoft</span>
+
+            </button>
+
+            <p class="register-text">
+                Don't have an account?
+                <a href="#">Register Now</a>
+            </p>
+
+        </p-card>
+
+    </div>
+
+</div>

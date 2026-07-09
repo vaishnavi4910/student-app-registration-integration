@@ -1,0 +1,20 @@
+<p>ng-class works!</p>
+<div class="row">
+    <div class="col-3" [ngClass]="divBgColor">
+        Div1
+    </div>
+    <div class="col-3" >
+        Div 2 
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-3">
+        <button class="btn btn-success"  (click)="addDiv1Color('bg-success')">Add green</button>
+        <button class="btn btn-danger"    (click)="addDiv1Color('bg-danger')">Add red</button>
+    </div>
+    <div class="col-3">       
+    </div>
+</div>

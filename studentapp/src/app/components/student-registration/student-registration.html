@@ -1,0 +1,132 @@
+<div class="container">
+
+  <h2>Student Registration Form</h2>
+
+  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+
+    <!-- FIRST NAME -->
+    <label>First Name *</label>
+    <input type="text" formControlName="firstName" />
+    <div class="error" *ngIf="studentForm.get('firstName')?.touched && studentForm.get('firstName')?.invalid">
+      First Name is required (only letters, max 40 chars)
+    </div>
+
+    <!-- LAST NAME -->
+    <label>Last Name *</label>
+    <input type="text" formControlName="lastName" />
+    <div class="error" *ngIf="studentForm.get('lastName')?.touched && studentForm.get('lastName')?.invalid">
+      Last Name is required (only letters, max 40 chars)
+    </div>
+
+    <!-- DOB -->
+    <label>Date of Birth *</label>
+    <input type="date" formControlName="dob" />
+    <div class="error" *ngIf="studentForm.get('dob')?.touched && studentForm.get('dob')?.invalid">
+      Date of Birth is required
+    </div>
+
+    <!-- GENDER -->
+    <label>Gender *</label>
+    <div>
+      <label><input type="radio" value="Male" formControlName="gender" /> Male</label>
+      <label><input type="radio" value="Female" formControlName="gender" /> Female</label>
+      <label><input type="radio" value="Others" formControlName="gender" /> Others</label>
+    </div>
+    <div class="error" *ngIf="studentForm.get('gender')?.touched && studentForm.get('gender')?.invalid">
+      Gender is required
+    </div>
+
+    <!-- COUNTRY -->
+    <label>Country *</label>
+    <select formControlName="country" (change)="onCountryChange()">
+      <option value="">Select Country</option>
+      <option *ngFor="let c of countries" [value]="c">{{ c }}</option>
+    </select>
+
+    <!-- STATE -->
+    <label>State *</label>
+    <select formControlName="state" (change)="onStateChange()">
+      <option value="">Select State</option>
+      <option *ngFor="let s of states[studentForm.value.country]" [value]="s">{{ s }}</option>
+    </select>
+
+    <!-- CITY -->
+    <label>City *</label>
+    <select formControlName="city">
+      <option value="">Select City</option>
+      <option *ngFor="let c of cities[studentForm.value.state]" [value]="c">{{ c }}</option>
+    </select>
+
+    <!-- ZIP -->
+    <label>Zip Code *</label>
+    <input type="text" formControlName="zipCode" />
+    <div class="error" *ngIf="studentForm.get('zipCode')?.touched && studentForm.get('zipCode')?.invalid">
+      Zip Code must be numeric (max 10 digits)
+    </div>
+
+    <!-- EMAIL -->
+    <label>Email *</label>
+    <input type="email" formControlName="email" />
+    <div class="error" *ngIf="studentForm.get('email')?.touched && studentForm.get('email')?.invalid">
+      Must be a valid @gmail.com email (max 50 chars)
+    </div>
+
+    <!-- MOBILE -->
+    <label>Mobile Number *</label>
+    <input type="text" formControlName="mobile" />
+    <div class="error" *ngIf="studentForm.get('mobile')?.touched && studentForm.get('mobile')?.invalid">
+      Must be exactly 10 digits
+    </div>
+
+    <!-- COURSE -->
+    <label>Course *</label>
+    <select formControlName="course">
+      <option value="">Select Course</option>
+      <option *ngFor="let c of courseList" [value]="c">{{ c }}</option>
+    </select>
+
+    <!-- BRANCH -->
+    <label>Branch *</label>
+    <select formControlName="branch">
+      <option value="">Select Branch</option>
+      <option *ngFor="let b of branchList" [value]="b">{{ b }}</option>
+    </select>
+
+    <!-- FILE -->
+    <label>Upload File *</label>
+    <input type="file" (change)="onFileSelect($event)" />
+    <div class="error" *ngIf="studentForm.get('file')?.touched && studentForm.get('file')?.invalid">
+      File is required (PDF, DOC, DOCX only)
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="buttons">
+
+      <button type="submit" [disabled]="studentForm.invalid">
+        Submit
+      </button>
+
+      <button type="button" (click)="onReset()">
+        Reset
+      </button>
+
+    </div>
+
+  </form>
+
+  <!-- DISPLAY SUBMITTED DATA -->
+  <div *ngIf="submittedData" class="result">
+
+    <h3>Submitted Student Details</h3>
+
+    <p><b>Name:</b> {{ submittedData.firstName }} {{ submittedData.lastName }}</p>
+    <p><b>DOB:</b> {{ submittedData.dob }}</p>
+    <p><b>Gender:</b> {{ submittedData.gender }}</p>
+    <p><b>Email:</b> {{ submittedData.email }}</p>
+    <p><b>Mobile:</b> {{ submittedData.mobile }}</p>
+    <p><b>Course:</b> {{ submittedData.course }}</p>
+    <p><b>Branch:</b> {{ submittedData.branch }}</p>
+
+  </div>
+
+</div>
