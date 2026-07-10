@@ -1,0 +1,44 @@
+<div class="sidebar">
+
+    <!-- Logo -->
+
+    <div class="logo">
+        <!-- <img src="assets/images/logo.png" alt=""> -->
+        <h2>EduPortal</h2>
+    </div>
+
+    <!-- Menu -->
+
+    <ul>
+
+        @for(item of menuItems; track item.label){
+
+        <li
+            [routerLink]="item.route"
+            routerLinkActive="active">
+
+            <i [class]="item.icon"></i>
+
+            <span>{{item.label}}</span>
+
+        </li>
+
+        }
+
+    </ul>
+
+    <!-- Bottom Card -->
+
+    <div class="upgrade-card">
+
+        <i class="pi pi-star-fill"></i>
+
+        <h4>Upgrade</h4>
+
+        <p>Unlock premium features</p>
+
+        <button>Upgrade Now</button>
+
+    </div>
+
+</div>

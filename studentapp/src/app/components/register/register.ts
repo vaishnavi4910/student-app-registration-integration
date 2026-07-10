@@ -49,6 +49,9 @@ cities:any[] = [];
 
 courseList: any[] = [];
 branchList: any[] = [];
+candidateGroupList: any[]=[];
+
+
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private api = inject(Api);
@@ -120,7 +123,13 @@ this.studentForm = this.fb.group({
 
     branch: ['', Validators.required],
 
-    file: [null, Validators.required]
+    candidateGroup: ['', Validators.required],
+
+    file: [null, Validators.required],
+
+
+
+
   });
   console.log('Register component loaded');
 
@@ -166,9 +175,7 @@ loadCountries(){
   .subscribe({
 
     next:(response:any)=>{
-
       console.log("Countries:",response);
-
       this.countries = response;
 
     },
@@ -186,21 +193,22 @@ loadCountries(){
 
 
 
-
-
-
-
-
-
- 
-
-
 onCountryChange() {
 
-  const countryId =  this.studentForm.get('country')?.value;
-    console.log("Selected country ID:", countryId );
-    this.loadStates(countryId);
+  const countryId = this.studentForm.get('country')?.value;
 
+  console.log("Selected country ID:", countryId);
+
+  // clear old state and city
+  this.studentForm.patchValue({
+    state: null,
+    city: null
+  });
+
+  this.states = [];
+  this.cities = [];
+
+  this.loadStates(countryId);
 }
   
 
@@ -211,7 +219,7 @@ onCountryChange() {
 console.log("Selected State ID:", stateId);
 
 this.loadCities(stateId);
-
+ 
 }
 
 
@@ -239,13 +247,6 @@ loadCities(stateId: number){
  });
 
 }
-
-
-
-
-
-
-
 
 
 loadCourses(){
@@ -298,19 +299,64 @@ loadBranches(courseCode: string) {
 }
 
 
-onCourseChange() {
 
+
+  onCourseChange() {
+
+  console.log("Course Changed");
+
+  console.log(this.studentForm.value);
   const courseCode = this.studentForm.get('course')?.value;
 
   console.log("Selected Course Code:", courseCode);
+
+  this.studentForm.patchValue({
+  branch: null,
+  candidateGroup: null
+});
+ this.branchList= [];
+  this.candidateGroupList = [];
 
   this.loadBranches(courseCode);
 
 }
 
 
+onBranchChange() {
+
+  const branchCode = this.studentForm.get('branch')?.value;
+
+  console.log("Selected Course Code:",branchCode );
+
+  this.loadCandidateGroup(branchCode);
+
+}
 
 
+
+loadCandidateGroup(branchCode: string) {
+
+  console.log("Calling Branch API:", branchCode);
+
+  this.api.getCandidateGroup(branchCode).subscribe({
+
+    next: (response: any) => {
+
+      console.log("Branches:", response);
+
+      this.candidateGroupList = response;
+
+    },
+
+    error: (error) => {
+
+      console.error(error);
+
+    }
+
+  });
+
+}
 
 
 
@@ -338,23 +384,77 @@ onCourseChange() {
     }
   }
 
-  onSubmit() {
+onSubmit() {
 
-    if (this.studentForm.valid) {
+  if (this.studentForm.invalid) {
+    this.studentForm.markAllAsTouched();
+    return;
+  }
 
-      this.submittedData = this.studentForm.value;
+  const formValue = this.studentForm.value;
 
-      console.log(this.submittedData);
+  const requestBody = {
 
-      alert('Registration Successful!');
+    firstName: formValue.firstName,
+    lastName: formValue.lastName,
+
+    dateOfBirth: formValue.dob,
+    gender: formValue.gender,
+
+    country: this.countries.find(
+      (c:any) => c.id === formValue.country
+    )?.countryName,
+
+    state: this.states.find(
+      (s:any) => s.id === formValue.state
+    )?.stateName,
+
+    city: this.cities.find(
+      (c:any) => c.id === formValue.city
+    )?.cityName,
+
+    zipCode: formValue.zipCode,
+
+    email: formValue.email,
+
+    mobileNumber: formValue.mobile,
+
+    course: this.courseList.find(
+      (c:any) => c.code === formValue.course
+    )?.label,
+
+    branch: this.branchList.find(
+      (b:any) => b.code === formValue.branch
+    )?.label,
+
+    candidateGroup: this.candidateGroupList.find(
+      (cg:any) => cg.code === formValue.candidateGroup
+    )?.label
+
+
+  };
+
+  console.log("Final Request Body:", requestBody);
+
+
+this.api.onCreateAccount(requestBody)
+  .subscribe({
+
+    next:(response:any)=>{
+
+      console.log("Registration Success:", response);
+
+      console.log("Going to login page");
 
       this.router.navigate(['/login']);
 
-    } else {
+    },
 
-      this.studentForm.markAllAsTouched();
-
+    error:(error:any)=>{
+      console.error("Registration Failed:", error);
     }
+
+  });
 
   }
 
@@ -366,8 +466,30 @@ onCourseChange() {
 
   }
 
+onSubmiit(){
+  const formValue = this.studentForm.value;
+}
+
+
+
+
+
+
+
+
+
+  
+
   register() {
     this.router.navigate(['/login']);
   }
+
+
+
+
+
+
+
+
 
 }

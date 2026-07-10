@@ -422,7 +422,8 @@
                             [options]="branchList"
                             optionLabel="label"
                             optionValue="code"
-                            placeholder="Select Branch">
+                            placeholder="Select course"
+                            (onChange)="onBranchChange()">
                         </p-select>
                    
                         @if(studentForm.get('branch')?.touched &&
@@ -436,9 +437,39 @@
 
                     </div>
 
+
+
+                    <div class="field">
+
+                        <!-- Candidate Group -->
+
+        <div class="field">
+
+            <label>Candidate Group</label>
+
+            <p-select
+            formControlName="candidateGroup"
+            [options]="candidateGroupList"
+            optionLabel="label"
+            optionValue="code"
+            placeholder="Select Candidate Group">
+        </p-select>
+            @if(studentForm.get('candidateGroup')?.touched &&
+            studentForm.get('candidateGroup')?.invalid){
+
+                <small class="error">
+                    Candidate Group is required.
+                </small>
+
+            }
+
+        </div>
+
+                    </div>
+
                     <!-- Upload File -->
 
-                    <div class="field full-width">
+                    <div class="field ">
 
                         <label>Upload Document</label>
 

@@ -9,11 +9,17 @@ export class Api {
   private http = inject(HttpClient);
 
   // private baseUrl = 'http://172.17.12.50:8082/reborn/api';
-getCountries() {
+
+
+
+  getCountries() {
   return this.http.get<any[]>(
     'http://172.17.12.50:8082/reborn/api/getCountries'
   );
 }
+
+
+
  getStates(countryId: number) {
 
   return this.http.get(
@@ -48,8 +54,27 @@ getBranches(courseCode: string) {
 }
 
 
+getCandidateGroup(groupCode: string) {
+  return this.http.get<any[]>(
+    `http://172.17.12.50:8082/reborn/api/lk-codes/${groupCode}`
+  );
+}
+
+
+
+onCreateAccount(user: any) {
+  return this.http.post(
+    'http://172.17.12.50:8082/reborn/candidates/create',
+    user
+  );
+}
+
+
 
 
 
 
 }
+
+
+

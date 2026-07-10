@@ -6,7 +6,7 @@ import {  LoginComponent } from './components/login/login';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [StudentRegistration, HomeComponent, RouterOutlet,LoginComponent],
+  imports: [HomeComponent, RouterOutlet,LoginComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
