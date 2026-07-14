@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
-
+import { NavbarComponent } from '../navbar/navbar';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
+
 } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -35,7 +36,8 @@ import { Api } from '../../services/api';
     RadioButtonModule,
     CheckboxModule,
     CardModule,
-    DividerModule
+    DividerModule,
+    NavbarComponent
   ],
   templateUrl: './register.html',
   styleUrl: './register.css'
@@ -50,14 +52,14 @@ cities:any[] = [];
 courseList: any[] = [];
 branchList: any[] = [];
 candidateGroupList: any[]=[];
+formSubmitted = false;
 
+private fb = inject(FormBuilder);
+private router = inject(Router);
+private api = inject(Api);
 
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
-  private api = inject(Api);
-
-  submittedData: any = null;
- studentForm!: FormGroup;
+submittedData: any = null;
+studentForm!: FormGroup;
 
 
 
@@ -86,7 +88,7 @@ this.studentForm = this.fb.group({
 
     dob: ['', Validators.required],
 
-    gender: ['', Validators.required],
+    gender: ['Male', Validators.required],
 
     country: ['', Validators.required],
 
@@ -111,21 +113,20 @@ this.studentForm = this.fb.group({
       ]
     ],
 
-    mobile: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(/^[0-9]{10}$/)
-      ]
-    ],
-
+ mobile: [
+  '',
+  [
+    Validators.required,
+    Validators.pattern(/^[6-9][0-9]{9}$/)
+  ]
+],
     course: ['', Validators.required],
 
     branch: ['', Validators.required],
 
     candidateGroup: ['', Validators.required],
 
-    file: [null, Validators.required],
+    file: [null],
 
 
 
@@ -140,6 +141,66 @@ this.studentForm = this.fb.group({
 
 
 }
+
+
+
+// loadCountries(): void {
+//   this.api.getCountries().subscribe({
+//     next: (response: any) => {
+//       this.countries = response;
+
+//       const india = this.countries.find(
+//         (country: any) =>
+//           country.countryName?.toLowerCase() === 'india'
+//       );
+
+//       if (india) {
+//         this.studentForm.patchValue({
+//           country: india.id
+//         });
+
+//         this.loadStates(india.id);
+//       }
+//     },
+
+//     error: (error) => {
+//       console.error('Error loading countries', error);
+//     }
+//   });
+// }
+
+
+loadCountries():void{
+  this.api.getCountries().subscribe({
+    next: (response : any)=>{
+      this.countries= response;
+      
+      const india=this.countries.find(
+        (country: any)=>country.countryName?.toLowerCase() == "india"
+      );
+
+      if(india){
+        this.studentForm.patchValue({
+          country: india.id
+        });
+        this.loadStates(india.id);
+      }
+
+    },
+
+
+
+  error: (error) => {
+      console.error('Error loading countries', error);
+    }
+  })
+}
+
+
+
+
+
+
 
 
 
@@ -169,26 +230,14 @@ loadStates(CountryId: number): void {
 
 
 
-loadCountries(){
 
-  this.api.getCountries()
-  .subscribe({
 
-    next:(response:any)=>{
-      console.log("Countries:",response);
-      this.countries = response;
 
-    },
 
-    error:(error)=>{
 
-      console.error("Error loading countries",error);
 
-    }
 
-  });
 
-}
 
 
 
@@ -212,16 +261,25 @@ onCountryChange() {
 }
   
 
- onStateChange() {
-
+onStateChange(): void {
   const stateId = this.studentForm.get('state')?.value;
 
-console.log("Selected State ID:", stateId);
+  console.log('Selected State ID:', stateId);
 
-this.loadCities(stateId);
- 
+  // Remove previously selected city
+  // this.studentForm.get('city')?.reset(null);
+
+    this.studentForm.patchValue({
+    city: null
+  });
+
+  // Remove previous city options
+  this.cities = [];
+
+  // if (stateId) {
+    this.loadCities(stateId);
+  // }
 }
-
 
 
 loadCities(stateId: number){
@@ -367,7 +425,7 @@ loadCandidateGroup(branchCode: string) {
     if (file) {
 
      const allowedTypes = [
-  'text/css',
+  'application/pdf',
   'application/msword', // .doc
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // .docx
 ];
@@ -384,7 +442,8 @@ loadCandidateGroup(branchCode: string) {
     }
   }
 
-onSubmit() {
+onSubmit(): void {
+  this.formSubmitted = true;
 
   if (this.studentForm.invalid) {
     this.studentForm.markAllAsTouched();
@@ -440,15 +499,14 @@ onSubmit() {
 this.api.onCreateAccount(requestBody)
   .subscribe({
 
-    next:(response:any)=>{
+    next: (response: any) => {
+  console.log('Registration successful:', response);
 
-      console.log("Registration Success:", response);
+  this.formSubmitted = false;
+  this.studentForm.reset();
 
-      console.log("Going to login page");
-
-      this.router.navigate(['/login']);
-
-    },
+  this.router.navigate(['/login']);
+},
 
     error:(error:any)=>{
       console.error("Registration Failed:", error);
@@ -485,6 +543,63 @@ onSubmiit(){
   }
 
 
+  getNameError(controlName: 'firstName' | 'lastName'): string {
+  const control = this.studentForm.get(controlName);
+
+  const fieldName =
+    controlName === 'firstName'
+      ? 'First name'
+      : 'Last name';
+
+  if (!control?.touched || !control.errors) {
+    return '';
+  }
+
+  if (control.hasError('required')) {
+    return `${fieldName} is required.`;
+  }
+
+  if (control.hasError('maxlength')) {
+    return `${fieldName} cannot contain more than 40 characters.`;
+  }
+
+  if (control.hasError('pattern')) {
+    return `${fieldName} must contain only letters and spaces.`;
+  }
+
+  return '';
+}
+
+
+
+
+
+getMobileError(): string {
+  const control = this.studentForm.get('mobile');
+  const value = control?.value ?? '';
+
+  if (!control?.touched && !control?.dirty) {
+    return '';
+  }
+
+  if (!value) {
+    return 'Mobile number is required.';
+  }
+
+  if (!/^[6-9]/.test(value)) {
+    return 'Mobile number must start with 6, 7, 8 or 9.';
+  }
+
+  if (value.length < 10) {
+    return 'Mobile number must contain exactly 10 digits.';
+  }
+
+  if (!/^[0-9]+$/.test(value)) {
+    return 'Mobile number must contain only digits.';
+  }
+
+  return '';
+}
 
 
 

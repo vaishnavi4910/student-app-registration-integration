@@ -1,0 +1,96 @@
+<header class="navbar-container">
+
+  <p-toolbar>
+
+    <ng-template #start>
+      <a class="logo" routerLink="/">
+        <span class="logo-icon"></span>
+        <span>EduPortal</span>
+      </a>
+    </ng-template>
+
+    <ng-template #center>
+      <nav class="nav-menu">
+
+        <a
+          class="nav-link"
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          Home
+        </a>
+
+        <a
+          class="nav-link"
+          routerLink="/courses"
+          routerLinkActive="active">
+          Courses
+        </a>
+
+        <a
+          class="nav-link"
+          routerLink="/about"
+          routerLinkActive="active">
+          About Us
+        </a>
+
+        <a
+          class="nav-link"
+          routerLink="/success-stories"
+          routerLinkActive="active">
+          Success Stories
+        </a>
+
+        <a
+          class="nav-link"
+          routerLink="/blog"
+          routerLinkActive="active">
+          Blog
+        </a>
+
+        <a
+          class="nav-link"
+          routerLink="/contact"
+          routerLinkActive="active">
+          Contact
+        </a>
+
+      </nav>
+    </ng-template>
+
+    <ng-template #end>
+      <div class="nav-actions">
+
+        <div class="search-box">
+          <input
+            pInputText
+            type="search"
+            placeholder="Search courses..."
+            aria-label="Search courses"
+            (input)="searchCourses($event)">
+
+          <i class="pi pi-search"></i>
+        </div>
+
+        <button
+          pButton
+          type="button"
+          label="Login"
+          class="login-button"
+          routerLink="/login">Login
+        </button>
+
+        <button
+          pButton
+          type="button"
+          label="Register"
+          class="register-button"
+          routerLink="/register">Register
+        </button>
+
+      </div>
+    </ng-template>
+
+  </p-toolbar>
+
+</header>

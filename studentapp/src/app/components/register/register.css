@@ -427,19 +427,41 @@ body {
 /* ==========================================
    Gender
 ========================================== */
-
 .gender-group {
     display: flex;
+    align-items: center;
     gap: 20px;
+    min-height: 42px;
     margin-top: 8px;
 }
 
 .gender-item {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
 }
 
+/* Override the general .field label styling */
+.gender-item label {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    line-height: 1;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+:host ::ng-deep .gender-item .p-radiobutton {
+    display: inline-flex;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+}
+
+:host ::ng-deep .gender-item .p-radiobutton-box {
+    width: 18px;
+    height: 18px;
+}
 /* ==========================================
    File Upload
 ========================================== */
@@ -471,15 +493,25 @@ body {
 /* ==========================================
    Buttons
 ========================================== */
-
 .button-group {
-    display: flex;
-    gap: 15px;
-    margin-top: 35px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  width: 100%;
 }
 
 .button-group button {
-    flex: 1;
+  flex: 1;
+}
+
+.form-error-message {
+  flex-basis: 100%;
+  width: 100%;
+  display: block;
+  margin-top: 2px;
+  color: #ef4048;
+  font-size: 14px;
+  text-align: center;
 }
 
 :host ::ng-deep .register-btn .p-button {
@@ -563,4 +595,34 @@ body {
     .register-card {
         padding: 8px;
     }
+}
+
+
+
+
+
+
+
+.required-star {
+  color: #ef4048;
+  font-size: 14px;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.optional-text {
+  color: #8c8c8c;
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+
+
+.form-error-message {
+  display: block;
+  margin-top: 10px;
+  color: #ef4048;
+  font-size: 14px;
+  text-align: center;
 }

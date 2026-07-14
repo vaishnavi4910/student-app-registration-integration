@@ -1,426 +1,293 @@
-<div class="navbar-container">
+<div class="page-shell">
 
-    <p-toolbar>
+  <!-- ================= NAVBAR ================= -->
 
-        <!-- Logo -->
-        <ng-template #start>
+  <header class="navbar-container">
+    <p-toolbar styleClass="edu-toolbar">
 
-            <div class="logo">
-                📘 EduPortal
-            </div>
+      <ng-template #start>
+        <a class="logo" [routerLink]="routes.home">
+          <span class="logo-icon"></span>
+          <span>EduPortal</span>
+        </a>
+      </ng-template>
 
-        </ng-template>
+      <ng-template #center>
+        <nav class="nav-menu">
+          <a
+            class="nav-link active"
+            [routerLink]="routes.home">
+            Home
+          </a>
 
-        <!-- Navigation -->
-        <ng-template #center>
+          <a class="nav-link" [routerLink]="routes.courses">
+            Courses
+          </a>
 
-            <div class="nav-menu">
+          <a class="nav-link" [routerLink]="routes.about">
+            About Us
+          </a>
 
-                <button pButton text class="nav-btn" [routerLink]="routes.home">
-                    Home
-                </button>
+          <a class="nav-link" [routerLink]="routes.successStories">
+            Success Stories
+          </a>
 
-                <button pButton text class="nav-btn">
-                    Courses
-                </button>
+          <a class="nav-link" [routerLink]="routes.blog">
+            Blog
+          </a>
 
-                <button pButton text class="nav-btn">
-                    About Us
-                </button>
+          <a class="nav-link" [routerLink]="routes.contact">
+            Contact
+          </a>
+        </nav>
+      </ng-template>
 
-                <button pButton text class="nav-btn">
-                    Success Stories
-                </button>
+      <ng-template #end>
+        <div class="nav-actions">
 
-                <button pButton text class="nav-btn">
-                    Blog
-                </button>
+          <div class="search-box">
+            <input
+              pInputText
+              type="search"
+              placeholder="Search courses..."
+              aria-label="Search courses"
+              (input)="searchCourses($event)">
 
-                <button pButton text class="nav-btn">
-                    Contact
-                </button>
+            <i class="pi pi-search"></i>
+          </div>
 
-            </div>
+          <button
+            pButton
+            type="button"
+            label="Login"
+            class="login-button"
+            [routerLink]="routes.login">Login
+          </button>
 
-        </ng-template>
-
-        <!-- Right Side -->
-        <ng-template #end>
-
-            <div class="nav-right">
-
-                <span class="p-input-icon-left">
-
-                    <i class="pi pi-search"></i>
-
-                    <input
-                        pInputText
-                        type="text"
-                        placeholder="Search Courses">
-
-                </span>
-
-                <button
-                    pButton
-                    outlined
-                    class="login-btn"
-                    [routerLink]="routes.login">
-                    Login
-                </button>
-
-                <button
-                    pButton
-                    class="register-btn"
-                    [routerLink]="routes.register">
-                    Register
-                </button>
-
-            </div>
-
-        </ng-template>
+          <button
+            pButton
+            type="button"
+            label="Register"
+            class="register-button"
+            [routerLink]="routes.register">Register
+          </button>
+        </div>
+      </ng-template>
 
     </p-toolbar>
+  </header>
 
-</div>
+  <!-- ================= HERO ================= -->
 
-<!-- ================= Hero ================= -->
+  <main>
+    <section class="hero-section">
 
-<section class="hero">
+      <div class="hero-copy">
 
-    <div class="hero-content">
-
-        <div class="hero-tag">
-            🚀 Start Learning Today
+        <div class="section-badge">
+          <span>🚀</span>
+          Start Learning Today
         </div>
 
         <h1>
-            Learn Without
-            <span>Limits</span>
+          Learn Without <span>Limits</span>
         </h1>
 
-        <p>
-            Empower your future with expert-led courses, hands-on projects,
-            and industry-ready skills. Start learning today and build the
-            career you've always dreamed of.
+        <p class="hero-description">
+          Empower your future with expert-led courses, hands-on projects,
+          and industry-ready skills. Start learning today and build the
+          career you've always dreamed of.
         </p>
 
-        <!-- Hero Buttons -->
+        <div class="hero-actions">
+          <button
+            pButton
+            type="button"
+            class="primary-button"
+            [routerLink]="routes.courses">
 
-        <div class="hero-buttons">
+            <span>Explore Courses</span>
+            <i class="pi pi-arrow-right"></i>
+          </button>
 
-            <button
-                pButton
-                class="explore-btn">
+          <button
+            pButton
+            type="button"
+            class="demo-button"
+            (click)="watchDemo()">
 
-                Explore Courses
-
-            </button>
-
-            <button
-                pButton
-                outlined
-                class="demo-btn">
-
-                <i class="pi pi-play"></i>
-
-                Watch Demo
-
-            </button>
-
+            <span>Watch Demo</span>
+            <i class="pi pi-play-circle"></i>
+          </button>
         </div>
 
-        <!-- Statistics -->
+        <div class="statistics">
+          @for (stat of statistics; track stat.label) {
+            <article class="stat-card">
 
-        <div class="education-info">
+              <div class="stat-icon" [class]="stat.color">
+                <i [class]="stat.icon"></i>
+              </div>
 
-            <div class="info-card">
+              <div>
+                <strong>{{ stat.value }}</strong>
+                <span>{{ stat.label }}</span>
+              </div>
 
-                <h3>1000+</h3>
+            </article>
+          }
+        </div>
 
-                <span>Online Courses</span>
+        <div class="benefits">
+          @for (benefit of benefits; track benefit.label) {
+            <div class="benefit">
+              <span class="benefit-icon">
+                <i [class]="benefit.icon"></i>
+              </span>
 
+              <span>{{ benefit.label }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Hero visual -->
+
+      <div class="hero-visual">
+
+        <div class="dot-pattern"></div>
+
+        <div class="image-background"></div>
+
+        <img
+          class="hero-image"
+          src="/assets/images/edu.jpg"
+          alt="Students learning together">
+
+        <article class="floating-card instructors-card">
+          <span class="floating-title">Top Instructors</span>
+
+          <div class="avatars">
+            <span>👨🏻</span>
+            <span>👩🏻</span>
+            <span>👨🏽</span>
+          </div>
+
+          <small>+200 more</small>
+        </article>
+
+        <article class="floating-card satisfaction-card">
+          <strong>95%</strong>
+          <span>Student Satisfaction</span>
+
+          <div class="chart-line">
+            <i></i>
+          </div>
+        </article>
+
+        <article class="floating-card progress-card">
+          <div class="progress-heading">
+            <span class="progress-icon">
+              <i class="pi pi-chart-line"></i>
+            </span>
+
+            <strong>Your Progress</strong>
+          </div>
+
+          <small>75% Complete</small>
+
+          <div class="progress-track">
+            <span></span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ================= WHY CHOOSE US ================= -->
+
+    <section class="why-section">
+
+      <div class="why-intro">
+        <div class="section-badge">
+          <span>⭐</span>
+          Why Choose Us
+        </div>
+
+        <h2>
+          Everything You Need<br>
+          to <span>Succeed</span>
+        </h2>
+
+        <p>
+          We provide the best learning experience with industry-relevant
+          content and personalized support.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        @for (feature of features; track feature.title) {
+          <article class="feature-card">
+
+            <div
+              class="feature-icon"
+              [class]="feature.color">
+
+              <i [class]="feature.icon"></i>
             </div>
 
-            <div class="info-card">
-
-                <h3>500+</h3>
-
-                <span>Expert Instructors</span>
-
+            <div class="feature-content">
+              <h3>{{ feature.title }}</h3>
+              <p>{{ feature.description }}</p>
             </div>
 
-            <div class="info-card">
+          </article>
+        }
+      </div>
 
-                <h3>10K+</h3>
+      <aside class="popular-panel">
 
-                <span>Students</span>
+        <div class="popular-header">
+          <h2>Popular Courses</h2>
 
-            </div>
-
+          <a [routerLink]="routes.courses">
+            View All
+            <i class="pi pi-arrow-right"></i>
+          </a>
         </div>
 
-    </div>
+        <div class="course-list">
+          @for (course of courses; track course.title) {
+            <article class="course-item">
 
-    <!-- Right Image -->
+              <img
+                [src]="course.image"
+                [alt]="course.title">
 
-   <div class="hero-image">
+              <div class="course-details">
+                <h3>{{ course.title }}</h3>
 
-    <img
-        src="assets/images/edu.jpg"
-        alt="Education">
+                <div class="course-meta">
+                  <span class="rating">
+                    <i class="pi pi-star-fill"></i>
+                    {{ course.rating }}
+                  </span>
 
-    <!-- Students -->
+                  <span>({{ course.students }})</span>
 
-    <div class="floating-card students-card">
+                  @if (course.tag) {
+                    <span class="course-tag">
+                      {{ course.tag }}
+                    </span>
+                  }
+                </div>
+              </div>
 
-        <i class="pi pi-users"></i>
-
-        <div>
-
-            <h4>10K+</h4>
-
-            <span>Happy Students</span>
-
+            </article>
+          }
         </div>
 
-    </div>
-
-    <!-- Courses -->
-
-    <div class="floating-card course-card">
-
-        <i class="pi pi-book"></i>
-
-        <div>
-
-            <h4>1000+</h4>
-
-            <span>Courses</span>
-
-        </div>
-
-    </div>
-
-    <!-- Rating -->
-
-    <div class="floating-card rating-card">
-
-        <i class="pi pi-star-fill"></i>
-
-        <div>
-
-            <h4>4.9</h4>
-
-            <span>Course Rating</span>
-
-        </div>
-
-    </div>
-
+      </aside>
+    </section>
+  </main>
 </div>
-
-</section>
-
-
-
-
-
-
-
-<section class="why-section">
-
-    <div class="why-left">
-
-        <div class="hero-tag">
-            🚀 Why Choose Us
-        </div>
-
-        <h2>Everything You Need To Succeed</h2>
-
-        <p>
-            We provide world-class education with expert mentors,
-            hands-on projects and career-focused learning paths to
-            help you achieve your goals.
-        </p>
-
-    </div>
-
-    <div class="why-cards">
-
-      <p-card class="feature-card">
-
-    <div class="feature-icon">
-        <i class="pi pi-book"></i>
-    </div>
-
-    <h3>1000+ Courses</h3>
-
-    <p>
-        Learn from beginner to advanced.
-    </p>
-
-</p-card>
-
-        <p-card class="feature-card">
-
-            <i class="pi pi-users feature-icon"></i>
-
-            <h3>Expert Mentors</h3>
-
-            <p>
-                Learn directly from experienced industry professionals.
-            </p>
-
-        </p-card>
-
-        <p-card class="feature-card">
-
-            <i class="pi pi-briefcase feature-icon"></i>
-
-            <h3>Career Support</h3>
-
-            <p>
-                Resume building, interview preparation and placement help.
-            </p>
-
-        </p-card>
-
-        <p-card class="feature-card">
-
-            <i class="pi pi-verified feature-icon"></i>
-
-            <h3>Certified Programs</h3>
-
-            <p>
-                Earn certificates recognized by leading organizations.
-            </p>
-
-        </p-card>
-
-    </div>
-
-</section>
-
-
-
-
-
-<!-- ================= Popular Courses ================= -->
-
-<section class="courses-section">
-
-    <div class="section-title">
-
-        <div class="hero-tag">
-            📚 Our Courses
-        </div>
-
-        <h2>Popular Courses</h2>
-
-        <p>
-            Explore our most popular courses designed by industry experts.
-        </p>
-
-    </div>
-
-    <div class="courses-grid">
-
-        <p-card class="course-card">
-
-            <!-- <img
-                src="assets/images/course1.jpg"
-                alt="Angular"> -->
-
-            <div class="course-content">
-
-                <span class="category">Web Development</span>
-
-                <h3>Angular 20 Complete Course</h3>
-
-                <p>
-                    Learn Angular from beginner to advanced with real-world projects.
-                </p>
-
-                <div class="course-footer">
-
-                    <span class="price">₹4,999</span>
-
-                    <button
-                        pButton
-                        class="course-btn">
-                        Enroll Now
-                    </button>
-
-                </div>
-
-            </div>
-
-        </p-card>
-
-        <p-card class="course-card">
-
-            <!-- <img
-                src="assets/images/course2.jpg"
-                alt="Java"> -->
-
-            <div class="course-content">
-
-                <span class="category">Programming</span>
-
-                <h3>Java Full Stack</h3>
-
-                <p>
-                    Master Java, Spring Boot and modern backend development.
-                </p>
-
-                <div class="course-footer">
-
-                    <span class="price">₹5,999</span>
-
-                    <button
-                        pButton
-                        class="course-btn">
-                        Enroll Now
-                    </button>
-
-                </div>
-
-            </div>
-
-        </p-card>
-
-        <p-card class="course-card">
-
-            <!-- <img
-                src="assets/images/course3.jpg"
-                alt="Python"> -->
-
-            <div class="course-content">
-
-                <span class="category">AI & Python</span>
-
-                <h3>Python with AI</h3>
-
-                <p>
-                    Build AI-powered applications using Python and modern tools.
-                </p>
-
-                <div class="course-footer">
-
-                    <span class="price">₹6,499</span>
-
-                    <button
-                        pButton
-                        class="course-btn">
-                        Enroll Now
-                    </button>
-
-                </div>
-
-            </div>
-
-        </p-card>
-
-    </div>
-
-</section>

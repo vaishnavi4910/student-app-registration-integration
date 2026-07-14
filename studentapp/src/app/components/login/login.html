@@ -115,7 +115,9 @@
                         [feedback]="false"
                         [toggleMask]="true"
                         placeholder="Enter your password"
-                        styleClass="w-full">
+                        [feedback]="false"
+                        [toggleMask]="true"
+                        [fluid]="true">
                     </p-password>
 
                 </div>
@@ -178,7 +180,12 @@
 
             <p class="register-text">
                 Don't have an account?
-                <a href="#">Register Now</a>
+                <button
+                    type="button"
+                    class="register-link"
+                    (click)="goToRegister()">
+                    Register Now
+                </button>
             </p>
 
         </p-card>

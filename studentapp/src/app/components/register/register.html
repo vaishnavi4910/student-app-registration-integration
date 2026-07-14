@@ -1,3 +1,5 @@
+
+<app-navbar></app-navbar>
 <!-- ================= Left Panel ================= -->
  
 <div class="register-page">
@@ -132,55 +134,55 @@
 
                     <!-- First Name -->
 
-                    <div class="field">
+                                <div class="field">
+                <label for="firstName">
+                    First Name<sup class="required-star">*</sup> 
+                </label>
 
-                        <label>First Name</label>
+              
+                    <input
+                        pInputText
+                        id="firstName"
+                        type="text"
+                        formControlName="firstName"
+                        placeholder="Enter first name"
+                        maxlength="40">
 
-                        <input
-                            pInputText
-                            type="text"
-                            formControlName="firstName"
-                            placeholder="Enter first name">
+                @if (getNameError('firstName'); as message) {
+                <small class="error">
+                    {{ message }}
+                </small>
+                }
 
-                        @if(studentForm.get('firstName')?.touched &&
-                        studentForm.get('firstName')?.invalid){
+                </div>
 
-                        <small class="error">
-                            First name is required.
-                        </small>
+                <!-- Last Name -->
 
-                        }
+                <div class="field">
 
-                    </div>
+                    <label for="lastName">
+                        Last Name<sup class="required-star">*</sup> 
+                    </label>
 
-                    <!-- Last Name -->
+                    <input pInputText id="lastName" 
+                    type="text"
+                    formControlName="lastName"
+                     placeholder="Enter last name"
+                      maxlength="40">
 
-                    <div class="field">
+                    @if (getNameError('lastName'); as message) {
+                    <small class="error">
+                        {{ message }}
+                    </small>
+                    }
 
-                        <label>Last Name</label>
-
-                        <input
-                            pInputText
-                            type="text"
-                            formControlName="lastName"
-                            placeholder="Enter last name">
-
-                        @if(studentForm.get('lastName')?.touched &&
-                        studentForm.get('lastName')?.invalid){
-
-                        <small class="error">
-                            Last name is required.
-                        </small>
-
-                        }
-
-                    </div>
+                </div>
 
                     <!-- DOB -->
 
                     <div class="field">
 
-                        <label>Date of Birth</label>
+                        <label>Date of Birth<sup class="required-star">*</sup> </label>
 
                         <p-datepicker
                             formControlName="dob"
@@ -204,7 +206,7 @@
 
                     <div class="field">
 
-                        <label>Gender</label>
+                        <label>Gender<sup class="required-star">*</sup> </label>
 
                         <div class="gender-group">
 
@@ -261,7 +263,7 @@
 
                     <div class="field">
 
-                        <label>Country</label>
+                        <label>Country<sup class="required-star">*</sup> </label>
 
                        <p-select
                             formControlName="country"
@@ -277,7 +279,7 @@
 
                     <div class="field">
 
-                        <label>State</label>
+                        <label>State<sup class="required-star">*</sup> </label>
 
                     <p-select
                         formControlName="state"
@@ -294,7 +296,7 @@
 
                     <div class="field">
 
-                        <label>City</label>
+                        <label>City<sup class="required-star">*</sup> </label>
 
                     <p-select
                         formControlName="city"
@@ -319,13 +321,14 @@
 
                     <div class="field">
 
-                        <label>Zip Code</label>
+                        <label>Zip Code<sup class="required-star">*</sup> </label>
 
                         <input
                             pInputText
                             type="text"
                             formControlName="zipCode"
-                            placeholder="Enter Zip Code">
+                            placeholder="Enter Zip Code"
+                            maxlength="6">
 
                         @if(studentForm.get('zipCode')?.touched &&
                         studentForm.get('zipCode')?.invalid){
@@ -342,7 +345,7 @@
 
                     <div class="field">
 
-                        <label>Email</label>
+                        <label>Email<sup class="required-star">*</sup> </label>
 
                         <input
                             pInputText
@@ -365,20 +368,24 @@
 
                     <div class="field">
 
-                        <label>Mobile Number</label>
+                        <label>Mobile Number<sup class="required-star">*</sup> </label>
 
                         <input
                             pInputText
                             type="text"
                             formControlName="mobile"
-                            placeholder="10-digit mobile number">
+                            placeholder="10-digit mobile number"
+                             maxlength="10">
 
                         @if(studentForm.get('mobile')?.touched &&
                         studentForm.get('mobile')?.invalid){
 
-                        <small class="error">
-                            Enter a valid mobile number.
-                        </small>
+                        
+                          @if (getMobileError(); as message) {
+                            <small class="error">
+                            {{ message }}
+                            </small>
+                                 }
 
                         }
 
@@ -388,7 +395,7 @@
 
                     <div class="field">
 
-                        <label>Course</label>
+                        <label>Course<sup class="required-star">*</sup> </label>
 
                         
                                         <p-select
@@ -415,7 +422,7 @@
 
                     <div class="field">
 
-                        <label>Branch</label>
+                        <label>Branch<sup class="required-star">*</sup> </label>
 
                                                 <p-select
                             formControlName="branch"
@@ -493,14 +500,7 @@
 
                 <div class="button-group">
 
-                    <button
-                        pButton
-                        type="submit"
-                        label="Create Account"
-                        icon="pi pi-user-plus"
-                        class="register-btn"
-                        [disabled]="studentForm.invalid">
-                    </button>
+                   
 
                     <button
                         pButton
@@ -512,7 +512,24 @@
                         (click)="onReset()">
                     </button>
 
+                    
+                     <button
+                        pButton
+                        type="submit"
+                        label="Create Account"
+                        icon="pi pi-user-plus"
+                        class="register-btn"
+                        >
+                    </button>
+                    @if (formSubmitted && studentForm.invalid) {
+                        <small class="form-error-message">
+                            Please fill in all required fields.
+                        </small>
+                    }
+                    
+
                 </div>
+                
 
                 <p-divider></p-divider>
 

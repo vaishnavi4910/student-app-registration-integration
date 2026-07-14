@@ -1,0 +1,12 @@
+:host { display: block; }
+.admin-navbar { height: 72px; box-sizing: border-box; display: flex; align-items: center; gap: 20px; padding: 0 24px; border-bottom: 1px solid #b7b2b3; background: #ffffff; }
+.search-box { width: min(420px, 42vw); position: relative; }
+.search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #8c8c8c; }
+.search-box input { width: 100%; padding-left: 40px; background: #ffffff; border-color: #b7b2b3; }
+.nav-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.profile-button { display: flex; align-items: center; gap: 10px; border: 0; background: transparent; color: #232527; cursor: pointer; }
+.profile-copy { display: grid; text-align: left; line-height: 1.2; }
+.profile-copy small { color: #8c8c8c; }
+:host ::ng-deep .p-button { color: #0d416b; }
+:host ::ng-deep .p-avatar { background: #2368a0; color: #ffffff; }
+@media (max-width: 680px) { .admin-navbar { padding: 0 12px; gap: 8px; } .search-box { flex: 1; width: auto; } .profile-copy, .profile-button > .pi-angle-down { display: none; } }
