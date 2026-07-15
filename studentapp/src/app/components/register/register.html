@@ -1,5 +1,8 @@
 
 <app-navbar></app-navbar>
+<!-- ================= REGISTRATION TOAST ================= -->
+<!-- Displays messages sent through MessageService -->
+<p-toast position="top-right"></p-toast>
 <!-- ================= Left Panel ================= -->
  
 <div class="register-page">
@@ -113,7 +116,8 @@
 
     <!-- Right Side -->
     <div class="right-panel">
-
+          <!-- ================= STEP 1: REGISTRATION CARD ================= -->
+             @if (currentStep === 1) {
         <p-card styleClass="register-card">
 
             <div class="card-header">
@@ -126,9 +130,10 @@
 
             </div>
 
-            <form
+           <!-- Clicking submit on Step 1 opens the password card -->
+                <form
                 [formGroup]="studentForm"
-                (ngSubmit)="onSubmit()">
+                (ngSubmit)="goToPasswordStep()">
 
                 <div class="form-grid">
 
@@ -351,16 +356,32 @@
                             pInputText
                             type="email"
                             formControlName="email"
-                            placeholder="example@gmail.com">
+                            placeholder="example@gmail.com"
+                             (blur)="checkEmailExists()">
 
-                        @if(studentForm.get('email')?.touched &&
-                        studentForm.get('email')?.invalid){
+                                                        @if (
+                                studentForm.get('email')?.touched &&
+                                studentForm.get('email')?.hasError('required')
+                                ) {
+                                <small class="error">
+                                    Email is required.
+                                </small>
+                                }
 
-                        <small class="error">
-                            Enter a valid Gmail address.
-                        </small>
+                                @if (
+                                studentForm.get('email')?.touched &&
+                                studentForm.get('email')?.hasError('pattern')
+                                ) {
+                                <small class="error">
+                                    Enter a valid email address.
+                                </small>
+                                }
 
-                        }
+                                @if (studentForm.get('email')?.hasError('emailExists')) {
+                                <small class="error">
+                                    Email already exists.
+                                </small>
+                                }
 
                     </div>
 
@@ -375,7 +396,8 @@
                             type="text"
                             formControlName="mobile"
                             placeholder="10-digit mobile number"
-                             maxlength="10">
+                             maxlength="10"
+                              (blur)="checkMobile()">
 
                         @if(studentForm.get('mobile')?.touched &&
                         studentForm.get('mobile')?.invalid){
@@ -388,6 +410,22 @@
                                  }
 
                         }
+
+
+                                                    @if (checkingMobile) {
+                            <small class="checking-message">
+                                Checking mobile number...
+                            </small>
+                            }
+
+                            @if (mobileStatusMessage && !checkingMobile) {
+                            <small
+                                [class.success-message]="!mobileAlreadyExists"
+                                [class.error]="mobileAlreadyExists"
+                            >
+                                {{ mobileStatusMessage }}
+                            </small>
+                            }
 
                     </div>
 
@@ -452,7 +490,7 @@
 
         <div class="field">
 
-            <label>Candidate Group</label>
+            <label>Candidate Group<sup class="required-star">*</sup> </label>
 
             <p-select
             formControlName="candidateGroup"
@@ -512,15 +550,16 @@
                         (click)="onReset()">
                     </button>
 
+                    <!-- ================= STEP 1: NEXT BUTTON ================= -->
+                            <button
+                            pButton
+                            type="submit"
+                            label="Next"
+                            icon="pi pi-arrow-right"
+                            iconPos="right"
+                            class="register-btn">
+                            </button>
                     
-                     <button
-                        pButton
-                        type="submit"
-                        label="Create Account"
-                        icon="pi pi-user-plus"
-                        class="register-btn"
-                        >
-                    </button>
                     @if (formSubmitted && studentForm.invalid) {
                         <small class="form-error-message">
                             Please fill in all required fields.
@@ -547,6 +586,206 @@
             </form>
 
         </p-card>
+    }
+
+
+
+
+
+
+
+
+   
+  <!-- ================= STEP 2: PASSWORD CARD ================= -->
+  @if (currentStep === 2) {
+
+    <p-card styleClass="register-card password-card">
+
+      <div class="card-header">
+        <h2>Student Registration</h2>
+
+        <p>
+          Set up your password to complete your registration.
+        </p>
+      </div>
+
+      <!-- ================= PROGRESS STEPS ================= -->
+      <div class="step-progress">
+
+        <div class="step-item completed">
+          <span class="step-circle">
+            <i class="pi pi-check"></i>
+          </span>
+
+          <small>Personal Information</small>
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step-item active">
+          <span class="step-circle">2</span>
+
+          <small>Set up Password</small>
+        </div>
+
+      </div>
+
+      <!-- ================= INFORMATION BOX ================= -->
+      <div class="password-notice">
+
+        <span class="notice-icon">
+          <i class="pi pi-shield"></i>
+        </span>
+
+        <div>
+          <strong>Almost There!</strong>
+
+          <p>
+            Please create a strong password to secure your account.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- ================= PASSWORD FORM ================= -->
+      <form
+        [formGroup]="studentForm"
+        (ngSubmit)="onSubmit()">
+
+        <!-- Create Password -->
+        <div class="field">
+
+          <label for="password">
+            Create Password
+            <sup class="required-star">*</sup>
+          </label>
+
+          <p-password
+            inputId="password"
+            formControlName="password"
+            placeholder="Enter password"
+            [toggleMask]="true"
+            [feedback]="false"
+            styleClass="password-input">
+          </p-password>
+
+          <!-- Password instructions -->
+          <small class="password-help">
+            Password must contain at least 8 characters with a
+            mix of letters, numbers and symbols.
+          </small>
+
+          <!-- Required validation -->
+          @if (
+            studentForm.get('password')?.touched &&
+            studentForm.get('password')?.hasError('required')
+          ) {
+            <small class="error">
+              Password is required.
+            </small>
+          }
+
+          <!-- Password rules validation -->
+          @else if (
+            studentForm.get('password')?.touched &&
+            studentForm.get('password')?.invalid
+          ) {
+            <small class="error">
+              Enter at least 8 characters including a letter,
+              number and symbol.
+            </small>
+          }
+
+        </div>
+
+        <!-- ================= CONFIRM PASSWORD ================= -->
+        <div class="field confirm-password-field">
+
+          <label for="confirmPassword">
+            Confirm Password
+            <sup class="required-star">*</sup>
+          </label>
+
+          <p-password
+            inputId="confirmPassword"
+            formControlName="confirmPassword"
+            placeholder="Confirm password"
+            [toggleMask]="true"
+            [feedback]="false"
+            styleClass="password-input">
+          </p-password>
+
+          <!-- Matching status -->
+          @if (studentForm.get('confirmPassword')?.value) {
+
+            @if (passwordsMatch) {
+              <small class="password-match">
+                <i class="pi pi-check-circle"></i>
+                Passwords match.
+              </small>
+            }
+
+            @else {
+              <small class="error">
+                Passwords do not match.
+              </small>
+            }
+
+          }
+
+          @else if (
+            studentForm.get('confirmPassword')?.touched
+          ) {
+            <small class="error">
+              Please confirm your password.
+            </small>
+          }
+
+        </div>
+
+        <!-- ================= ACTION BUTTONS ================= -->
+        <div class="password-actions">
+
+          <!-- Return to Step 1 -->
+          <button
+            pButton
+            type="button"
+            label="Back"
+            icon="pi pi-arrow-left"
+            severity="secondary"
+            outlined="true"
+            (click)="goBackToRegistration()">
+          </button>
+
+          <!-- Submit complete registration -->
+          <button
+            pButton
+            type="submit"
+            label="Create Account"
+            icon="pi pi-check"
+            class="register-btn"
+            [disabled]="!canCreateAccount">
+          </button>
+
+        </div>
+
+        <p-divider></p-divider>
+
+        <div class="login-text">
+          Already have an account?
+
+          <a routerLink="/login">
+            Login
+          </a>
+        </div>
+
+      </form>
+
+    </p-card>
+
+  }
+
+
 
     </div>
 

@@ -9,8 +9,11 @@ import {
   Validators,
 
 } from '@angular/forms';
-import { Router } from '@angular/router';
-
+// ================= PASSWORD STEP: RouterLink import =================
+import { Router, RouterLink } from '@angular/router';
+// ================= SUCCESS TOAST IMPORTS =================
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 // PrimeNG
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -21,7 +24,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { Api } from '../../services/api';
-
+// ================= PASSWORD STEP: PrimeNG password =================
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-register',
@@ -37,8 +41,20 @@ import { Api } from '../../services/api';
     CheckboxModule,
     CardModule,
     DividerModule,
+    ToastModule,
+    
+
+  // ================= PASSWORD STEP: Added modules =================
+  PasswordModule,
+  RouterLink,
+    
     NavbarComponent
   ],
+
+
+// ================= TOAST FUNCTIONALITY: PROVIDER =================
+// Allows Angular to create MessageService for this component.
+  providers: [MessageService],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
@@ -54,9 +70,45 @@ branchList: any[] = [];
 candidateGroupList: any[]=[];
 formSubmitted = false;
 
+
+
+// ================= MOBILE API VALIDATION =================
+mobileStatusMessage = '';
+mobileAlreadyExists = false;
+checkingMobile = false;
+
+
+
+
+// ================= REGISTRATION STEP CONTROL =================
+// Step 1 displays personal information.
+// Step 2 displays password fields.
+currentStep: 1 | 2 = 1;
+
+// Only these fields are checked when the user clicks Next.
+// Password fields are not checked until Step 2.
+private readonly registrationControlNames = [
+  'firstName',
+  'lastName',
+  'dob',
+  'gender',
+  'country',
+  'state',
+  'city',
+  'zipCode',
+  'email',
+  'mobile',
+  'course',
+  'branch',
+  'candidateGroup'
+];
+
 private fb = inject(FormBuilder);
 private router = inject(Router);
 private api = inject(Api);
+// ================= TOAST FUNCTIONALITY: SERVICE =================
+// Used to send success messages to <p-toast>.
+private messageService = inject(MessageService);
 
 submittedData: any = null;
 studentForm!: FormGroup;
@@ -126,8 +178,22 @@ this.studentForm = this.fb.group({
 
     candidateGroup: ['', Validators.required],
 
-    file: [null],
+file: [null],
 
+// ================= PASSWORD STEP: Form controls =================
+password: [
+  '',
+  [
+    Validators.required,
+    Validators.minLength(8),
+    Validators.pattern(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/
+    )
+  ]
+],
+
+confirmPassword: ['', Validators.required]
+// ================= END PASSWORD CONTROLS =================
 
 
 
@@ -442,22 +508,107 @@ loadCandidateGroup(branchCode: string) {
     }
   }
 
-onSubmit(): void {
+
+
+// ================= STEP 1: NEXT BUTTON =================
+// ================= STEP 1: NEXT BUTTON =================
+goToPasswordStep(): void {
+  console.log('Next button clicked');
+
   this.formSubmitted = true;
 
-  if (this.studentForm.invalid) {
-    this.studentForm.markAllAsTouched();
+  const registrationIsInvalid =
+    this.registrationControlNames.some(controlName => {
+      const control = this.studentForm.get(controlName);
+
+      // Shows which registration field is invalid
+      if (control?.invalid) {
+        console.log(
+          'Invalid field:',
+          controlName,
+          'Value:',
+          control.value,
+          'Errors:',
+          control.errors
+        );
+      }
+
+      return control?.invalid;
+    });
+
+  if (registrationIsInvalid) {
+    this.registrationControlNames.forEach(controlName => {
+      this.studentForm.get(controlName)?.markAsTouched();
+    });
+
+    console.log('Password step blocked because form is invalid');
     return;
   }
 
+  // Registration fields are valid
+  this.formSubmitted = false;
+  this.currentStep = 2;
+
+  console.log('Current step:', this.currentStep);
+}
+
+// ================= STEP 2: BACK BUTTON =================
+goBackToRegistration(): void {
+  // Form values are not reset, so entered information remains available.
+  this.currentStep = 1;
+}
+
+
+// ================= PASSWORD MATCH CHECK =================
+get passwordsMatch(): boolean {
+  const password =
+    this.studentForm.get('password')?.value;
+
+  const confirmPassword =
+    this.studentForm.get('confirmPassword')?.value;
+
+  return (
+    !!password &&
+    !!confirmPassword &&
+    password === confirmPassword
+  );
+}
+
+
+// ================= CREATE ACCOUNT BUTTON STATE =================
+get canCreateAccount(): boolean {
+  return (
+    this.studentForm.get('password')?.valid === true &&
+    this.studentForm.get('confirmPassword')?.valid === true &&
+    this.passwordsMatch
+  );
+}
+
+onSubmit(): void {
+  this.formSubmitted = true;
+
+  // ================= FINAL PASSWORD VALIDATION =================
+// ================= FINAL FORM AND PASSWORD VALIDATION =================
+// Check the entire registration form again before calling the POST API.
+if (this.studentForm.invalid || !this.canCreateAccount) {
+  this.studentForm.markAllAsTouched();
+  return;
+}
+
   const formValue = this.studentForm.value;
+  const dob: Date = formValue.dob;
+
+const formattedDob =
+  `${dob.getFullYear()}-` +
+  `${String(dob.getMonth() + 1).padStart(2, '0')}-` +
+  `${String(dob.getDate()).padStart(2, '0')}`;
 
   const requestBody = {
 
     firstName: formValue.firstName,
     lastName: formValue.lastName,
 
-    dateOfBirth: formValue.dob,
+    dateOfBirth: formattedDob,
     gender: formValue.gender,
 
     country: this.countries.find(
@@ -488,8 +639,12 @@ onSubmit(): void {
 
     candidateGroup: this.candidateGroupList.find(
       (cg:any) => cg.code === formValue.candidateGroup
-    )?.label
+    )?.label , 
 
+
+
+// ================= PASSWORD SENT TO POST API =================
+password: formValue.password
 
   };
 
@@ -504,25 +659,92 @@ this.api.onCreateAccount(requestBody)
 
   this.formSubmitted = false;
   this.studentForm.reset();
+    // ================= SHOW SUCCESS TOAST =================
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Registration Successful',
 
-  this.router.navigate(['/login']);
-},
+        // Use the backend message when available.
+        detail:
+          response?.message ||
+          'Your account has been created successfully.',
 
-    error:(error:any)=>{
-      console.error("Registration Failed:", error);
+        // Toast remains visible for 5 seconds.
+        life: 5000
+      });
+
+      // ================= NAVIGATE AFTER 5 SECONDS =================
+      // Wait for the toast to finish before leaving this page.
+      setTimeout(() => {
+        this.router.navigate(['/home']);
+      }, 5000);
+    },
+
+    // ================= ERROR RESPONSE =================
+    error: (error: any) => {
+      console.error('Registration failed:', error);
+      console.error('Backend error body:', error.error);
+      console.error('HTTP status:', error.status);
     }
 
   });
 
   }
 
-  onReset() {
+//  onReset(): void {
+//   const india = this.countries.find(
+//     country =>
+//       country.countryName?.toLowerCase() === 'india'
+//   );
 
-    this.studentForm.reset();
+//   this.studentForm.reset({
+//     gender: 'Male',
+//     country: india?.id ?? null
+//   });
 
-    this.submittedData = null;
+//   this.states = [];
+//   this.cities = [];
+//   this.branchList = [];
+//   this.candidateGroupList = [];
 
+//   if (india) {
+//     this.loadStates(india.id);
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+onReset():void{
+  const india = this.countries.find(
+    country => country.countryName?.toLowerCase()=== 'india'
+  );
+
+  this.studentForm.reset({
+    gender :'Male',
+    country: india?.id??null
+  });
+  // ================= RESET REGISTRATION STEP =================
+  this.currentStep = 1;
+  this.formSubmitted = false;
+  this.states = [];
+  this.cities = [];
+  this.branchList = [];
+  this.candidateGroupList = [];
+
+  if(india){
+    this.loadStates(india.id);
   }
+
+}
+
 
 onSubmiit(){
   const formValue = this.studentForm.value;
@@ -605,6 +827,99 @@ getMobileError(): string {
 
 
 
+checkEmailExists(): void {
+  const emailControl = this.studentForm.get('email');
+  const email = emailControl?.value?.trim();
+
+  // Don't call API for empty or incorrectly formatted email
+  if (
+    !email ||
+    emailControl?.hasError('required') ||
+    emailControl?.hasError('pattern')
+  ) {
+    return;
+  }
+
+this.api.validateEmail(email).subscribe({
+  next: (response: any) => {
+    console.log('Email validation response:', response);
+
+    if (response.status === true) {
+      emailControl?.setErrors({
+        ...(emailControl.errors ?? {}),
+        emailExists: true
+      });
+
+      console.log('Email already exists');
+    } else {
+      const errors = { ...(emailControl?.errors ?? {}) };
+
+      delete errors['emailExists'];
+
+      emailControl?.setErrors(
+        Object.keys(errors).length > 0 ? errors : null
+      );
+
+      console.log('Email is available');
+    }
+  },
+
+  error: (error: any) => {
+    console.error('Email validation failed:', error);
+  }
+});
+}
+
+
+
+
+
+
+
+
+
+checkMobile(): void {
+  const mobileControl = this.studentForm.get('mobile');
+  const mobileNumber = mobileControl?.value;
+
+  // Clear the previous API message
+  this.mobileStatusMessage = '';
+  this.mobileAlreadyExists = false;
+
+  // Do not call the API when mobile validation fails
+  if (!mobileNumber || mobileControl?.invalid) {
+    return;
+  }
+
+  this.checkingMobile = true;
+
+  this.api.validateMobile(mobileNumber).subscribe({
+    next: (response: any) => {
+      console.log('Mobile validation response:', response);
+
+      this.checkingMobile = false;
+      this.mobileStatusMessage = response.message;
+
+      // status true means the mobile number already exists
+      this.mobileAlreadyExists = response.status;
+
+      if (response.status) {
+        mobileControl.setErrors({
+          ...mobileControl.errors,
+          mobileExists: true
+        });
+      }
+    },
+
+    error: (error: any) => {
+      console.error('Mobile validation failed:', error);
+
+      this.checkingMobile = false;
+      this.mobileStatusMessage =
+        'Unable to validate mobile number.';
+    }
+  });
+}
 
 
 }

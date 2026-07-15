@@ -626,3 +626,231 @@ body {
   font-size: 14px;
   text-align: center;
 }
+
+
+
+/* ==================================================
+   PASSWORD STEP CARD
+================================================== */
+
+.password-card {
+    max-width: 620px;
+}
+
+.password-header {
+    margin-bottom: 24px;
+}
+
+
+/* ==================================================
+   STEP PROGRESS INDICATOR
+================================================== */
+
+.step-progress {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 430px;
+    margin: 0 auto 32px;
+}
+
+.step-item {
+    width: 145px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #8c8c8c;
+    text-align: center;
+}
+
+.step-item small {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.step-circle {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #b7b2b3;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #8c8c8c;
+    font-weight: 600;
+}
+
+/* Completed and active steps */
+.step-item.completed,
+.step-item.active {
+    color: #0d416b;
+}
+
+.step-item.completed .step-circle,
+.step-item.active .step-circle {
+    border-color: #2368a0;
+    background: #2368a0;
+    color: #ffffff;
+}
+
+/* Dashed line between steps */
+.step-line {
+    flex: 1;
+    margin-top: 17px;
+    border-top: 2px dashed #b7b2b3;
+}
+
+
+/* ==================================================
+   ALMOST THERE INFORMATION BOX
+================================================== */
+
+.password-notice {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    margin-bottom: 28px;
+    border: 1px solid rgba(35, 104, 160, 0.18);
+    border-radius: 12px;
+    background: #f8fbfd;
+}
+
+.notice-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 170, 231, 0.12);
+    color: #2368a0;
+    font-size: 21px;
+}
+
+.password-notice strong {
+    color: #2368a0;
+}
+
+.password-notice p {
+    margin: 4px 0 0;
+    color: #8c8c8c;
+    font-size: 12px;
+}
+
+
+/* ==================================================
+   PASSWORD FORM
+================================================== */
+
+.password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* Make PrimeNG password inputs use the full card width */
+:host ::ng-deep .password-input,
+:host ::ng-deep .password-input .p-password,
+:host ::ng-deep .password-input .p-inputtext {
+    width: 100%;
+}
+
+/* Password instruction below Create Password */
+.password-help {
+    margin-top: 7px;
+    color: #8c8c8c;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* Successful matching message */
+.password-match {
+    margin-top: 6px;
+    color: #2368a0;
+    font-size: 12px;
+}
+
+
+/* ==================================================
+   PASSWORD STEP BUTTONS
+================================================== */
+
+.password-actions {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 14px;
+    margin-top: 30px;
+}
+
+.password-actions button {
+    width: 100%;
+}
+
+/* PrimeNG button is placed directly on the button element */
+:host ::ng-deep button.register-btn.p-button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(
+        135deg,
+        #00aae7,
+        #2368a0
+    );
+}
+
+:host ::ng-deep button.register-btn.p-button:not(:disabled):hover {
+    background: linear-gradient(
+        135deg,
+        #2368a0,
+        #0d416b
+    );
+}
+
+/* Disabled until passwords are valid and matching */
+:host ::ng-deep button.register-btn.p-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+
+/* ==================================================
+   PASSWORD STEP MOBILE RESPONSIVENESS
+================================================== */
+
+@media (max-width: 576px) {
+    .step-item {
+        width: 115px;
+    }
+
+    .password-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+
+
+.success-message {
+  display: block;
+  margin-top: 5px;
+  color: green;
+}
+
+.checking-message {
+  display: block;
+  margin-top: 5px;
+  color: #2368a0;
+}
+
+.error {
+  display: block;
+  margin-top: 5px;
+  color: #ef4048;
+}

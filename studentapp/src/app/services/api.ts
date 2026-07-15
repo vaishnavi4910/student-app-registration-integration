@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -69,10 +70,44 @@ onCreateAccount(user: any) {
   );
 }
 
+validateEmail(email: string) {
+  return this.http.get<any>(
+    'http://172.17.12.50:8082/reborn/candidates/validate-email',
+    {
+      params: { email :email }
+    }
+  );
+}
+
+
+
+validateMobile(mobileNumber: string) {
+  return this.http.get<any>(
+    'http://172.17.12.50:8082/reborn/candidates/validate-mobile',
+    {
+      params: { mobileNumber: mobileNumber }
+    }
+  );
+}
 
 
 
 
+
+
+
+
+
+  login(loginData: {
+    email: string;
+    password: string;
+  }): Observable<any> {
+
+    const url =
+      'http://172.17.12.50:8082/reborn/candidates/login';
+
+    return this.http.post<any>(url, loginData);
+  }
 
 }
 

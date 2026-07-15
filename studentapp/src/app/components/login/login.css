@@ -134,12 +134,14 @@
 /* ================= Right Section ================= */
 
 .right-section{
+    flex: none;
     width:100%;
     max-width: 100%;
     margin-left:0;
 }
 
 :host ::ng-deep .p-card{
+    padding: 25px;
     border:none;
     border-radius:20px;
     box-shadow:0 15px 35px rgba(0,0,0,.08);
@@ -374,4 +376,45 @@
 
 .register-link:hover {
   color: #0d416b;
+}
+
+/* ================= Login validation messages ================= */
+
+.error-message {
+    display: block;
+    margin-top: 6px;
+    color: #ef4048;
+    font-size: 13px;
+}
+
+/* Error returned by the Login API */
+.login-error {
+    width: 100%;
+    margin-bottom: 16px;
+    padding: 11px 14px;
+
+    color: #ef4048;
+    background: rgba(239, 64, 72, 0.08);
+
+    border: 1px solid #ef4048;
+    border-radius: 8px;
+
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Red border when the email input is invalid */
+.field input.ng-invalid.ng-touched {
+    border-color: #ef4048;
+}
+
+/* Red border for the PrimeNG password input */
+:host ::ng-deep .password-field.ng-invalid.ng-touched input {
+    border-color: #ef4048;
+}
+
+/* Disabled/loading login button appearance */
+:host ::ng-deep .login-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }

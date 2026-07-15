@@ -1,45 +1,54 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { Router } from '@angular/router';
-
-// PrimeNG
-import { CardModule } from 'primeng/card';
+import { Router, RouterLink } from '@angular/router';
+import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { DividerModule } from 'primeng/divider';
+import { MessageModule } from 'primeng/message';
+import { CardModule } from 'primeng/card';
 
+import { Api } from '../../services/api';
 @Component({
   selector: 'app-login',
   standalone: true,
+
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CardModule,
+    RouterLink,
     InputTextModule,
     PasswordModule,
     ButtonModule,
     CheckboxModule,
+    MessageModule,
+    CardModule,
     DividerModule
   ],
+
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
 export class LoginComponent {
 
+  private fb = inject(FormBuilder);
+  private api = inject(Api);
+  private router = inject(Router);
+
   loginForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router
-  ) {
+  formSubmitted = false;
+  loggingIn = false;
+  loginErrorMessage = '';
+
+  constructor() {
     this.loginForm = this.fb.group({
       email: [
         '',
@@ -51,26 +60,74 @@ export class LoginComponent {
 
       password: [
         '',
-        Validators.required
+        [
+          Validators.required
+        ]
       ],
 
-      remember: [false]
+      rememberMe: [false]
     });
   }
 
-  login(): void {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
+ 
+
+
+
+  onLogin(): void {
+  this.formSubmitted = true;
+  this.loginErrorMessage = '';
+
+  if (this.loginForm.invalid) {
+    this.loginForm.markAllAsTouched();
+    return;
+  }
+
+  const requestBody = {
+    email: this.loginForm.get('email')?.value.trim(),
+    password: this.loginForm.get('password')?.value
+  };
+
+  console.log('Data sent to login API:', requestBody);
+
+  this.loggingIn = true;
+
+  this.api.login(requestBody).subscribe({
+
+    next: (response: any) => {
+      console.log('Complete login response:', response);
+
+      this.loggingIn = false;
+
+      if (response.success === true) {
+        this.formSubmitted = false;
+        this.loginErrorMessage = '';
+
+        this.router.navigate(['/admin/students']);
+      } else {
+        this.loginErrorMessage =
+          response.message || 'Invalid email or password.';
+      }
+    },
+
+    error: (error: any) => {
+      console.error('Login HTTP error:', error);
+      console.error('Backend error body:', error.error);
+
+      this.loggingIn = false;
+
+      this.loginErrorMessage =
+        error.error?.message ||
+        'Invalid email or password. Please try again.';
     }
+  });
+}
 
-    console.log('Login form:', this.loginForm.value);
 
-    // Navigate after successful login
-    this.router.navigate(['/admin']);
-  }
+goToRegister(): void {
+  this.router.navigate(['/register']);
+}
 
-  goToRegister(): void {
-    this.router.navigate(['/register']);
-  }
+
+
+
 }

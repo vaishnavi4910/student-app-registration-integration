@@ -90,27 +90,47 @@
                 Sign in to continue your learning journey.
             </p>
 
-            <form
+                            <form
                 [formGroup]="loginForm"
-                (ngSubmit)="login()">
+                (ngSubmit)="onLogin()">
 
-                <div class="field">
-
-                    <label>Email Address</label>
+                <!-- Email -->
+                <div class="form-field">
+                    <label for="email">Email</label>
 
                     <input
-                        pInputText
-                        type="email"
-                        formControlName="email"
-                        placeholder="Enter your email">
+                    pInputText
+                    id="email"
+                    type="email"
+                    
+                    formControlName="email"
+                    placeholder="Enter your registered email"
+                    autocomplete="email">
 
+                    @if (
+                    loginForm.get('email')?.touched &&
+                    loginForm.get('email')?.hasError('required')
+                    ) {
+                    <small class="error-message">
+                        Email is required.
+                    </small>
+                    }
+
+                    @if (
+                    loginForm.get('email')?.touched &&
+                    loginForm.get('email')?.hasError('email')
+                    ) {
+                    <small class="error-message">
+                        Please enter a valid email address.
+                    </small>
+                    }
                 </div>
 
-                <div class="field">
+                <!-- Password -->
+                <div class="form-field">
+                    <label for="password">Password</label>
 
-                    <label>Password</label>
-
-                    <p-password
+                     <p-password
                         formControlName="password"
                         [feedback]="false"
                         [toggleMask]="true"
@@ -120,33 +140,54 @@
                         [fluid]="true">
                     </p-password>
 
+                    @if (
+                    loginForm.get('password')?.touched &&
+                    loginForm.get('password')?.hasError('required')
+                    ) {
+                    <small class="error-message">
+                        Password is required.
+                    </small>
+                    }
                 </div>
 
+                <!-- Remember me -->
                 <div class="options">
-
                     <div class="remember">
+                    <p-checkbox
+                        inputId="rememberMe"
+                        formControlName="rememberMe"
+                        [binary]="true">
+                    </p-checkbox>
 
-                        <p-checkbox
-                            formControlName="remember"
-                            binary="true">
-                        </p-checkbox>
-
-                        <label>Remember Me</label>
-
+                    <label for="rememberMe">
+                        Remember me
+                    </label>
                     </div>
 
-                    <a href="#">Forgot Password?</a>
-
+                    <a routerLink="/forgot-password">
+                    Forgot Password?
+                    </a>
                 </div>
 
+                <!-- Backend login error -->
+                @if (loginErrorMessage) {
+                    <div class="login-error">
+                    {{ loginErrorMessage }}
+                    </div>
+                }
+
+                <!-- Login button -->
                 <button
                     pButton
                     type="submit"
-                    label="Login"
-                    class="login-btn w-full">
+                    class="login-btn w-full"
+                    [loading]="loggingIn"
+                   >
+
+                    {{ loggingIn ? 'Logging in...' : 'Login' }}
                 </button>
 
-            </form>
+                </form>
 
             <p-divider align="center">
                 Or continue with
