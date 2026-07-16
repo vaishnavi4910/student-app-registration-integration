@@ -93,21 +93,23 @@ export class LoginComponent {
 
   this.api.login(requestBody).subscribe({
 
-    next: (response: any) => {
-      console.log('Complete login response:', response);
+   next: (response: any) => {
+  console.log('Complete login response:', response);
 
-      this.loggingIn = false;
+  this.loggingIn = false;
 
-      if (response.success === true) {
-        this.formSubmitted = false;
-        this.loginErrorMessage = '';
+  if (response.success === true) {
+    this.formSubmitted = false;
+    this.loginErrorMessage = '';
 
-        this.router.navigate(['/admin/students']);
-      } else {
-        this.loginErrorMessage =
-          response.message || 'Invalid email or password.';
-      }
-    },
+    // Navigate to the Student Grid after successful login
+    this.router.navigate(['/admin/students']);
+  } else {
+    // Stay on the Login page when login fails
+    this.loginErrorMessage =
+      response.message || 'Invalid email or password.';
+  }
+},
 
     error: (error: any) => {
       console.error('Login HTTP error:', error);

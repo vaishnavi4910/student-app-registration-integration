@@ -488,28 +488,52 @@
 
                         <!-- Candidate Group -->
 
-        <div class="field">
+        <!-- Candidate Group -->
+<div class="field">
 
-            <label>Candidate Group<sup class="required-star">*</sup> </label>
+    <label>
+        Candidate Group
+        <sup class="required-star">*</sup>
+    </label>
 
-            <p-select
-            formControlName="candidateGroup"
-            [options]="candidateGroupList"
-            optionLabel="label"
-            optionValue="code"
-            placeholder="Select Candidate Group">
-        </p-select>
-            @if(studentForm.get('candidateGroup')?.touched &&
-            studentForm.get('candidateGroup')?.invalid){
+    <p-select
+        styleClass="candidate-group-select"
+        panelStyleClass="candidate-group-panel"
+        formControlName="candidateGroup"
+        [options]="candidateGroupList"
+        optionLabel="label"
+        optionValue="code"
+        placeholder="Select Candidate Group">
 
-                <small class="error">
-                    Candidate Group is required.
-                </small>
+        <!-- Text displayed when the dropdown is closed -->
+        <ng-template #selectedItem let-selectedOption>
+            <span
+                class="candidate-selected-text"
+                [title]="selectedOption?.label">
 
-            }
+                {{ selectedOption?.label }}
+            </span>
+        </ng-template>
 
-        </div>
+        <!-- Full values displayed when the dropdown is opened -->
+        <ng-template #item let-option>
+            <span class="candidate-option-text">
+                {{ option.label }}
+            </span>
+        </ng-template>
 
+    </p-select>
+
+    @if (
+        studentForm.get('candidateGroup')?.touched &&
+        studentForm.get('candidateGroup')?.invalid
+    ) {
+        <small class="error">
+            Candidate Group is required.
+        </small>
+    }
+
+</div>
                     </div>
 
                     <!-- Upload File -->

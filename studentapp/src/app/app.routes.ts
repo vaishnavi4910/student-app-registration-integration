@@ -3,17 +3,27 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home';
 import { LoginComponent } from './components/login/login';
 import { Register } from './components/register/register';
-import { Adminlayout } from './layouts/adminlayout/adminlayout';
+import { StudentGrid } from './components/student-grid/student-grid';
 
-// Future pages
-// import { DashboardComponent } from './pages/dashboard/dashboard';
-// import { StudentsComponent } from './pages/students/students';
+import { AdminLayout } from './layouts/admin-layout/admin-layout';
 
 export const routes: Routes = [
 
-  // Landing Page (No Sidebar)
- 
-  // Authentication Pages (No Sidebar)
+  // Temporarily open the Student Grid instead of Home
+  // {
+  //   path: '',
+  //   redirectTo: 'admin/students',
+  //   pathMatch: 'full'
+  // },
+   {
+    path: '',
+    component: HomeComponent,
+  },
+  // Public pages
+  {
+    path: 'home',
+    component: HomeComponent
+  },
   {
     path: 'login',
     component: LoginComponent
@@ -22,38 +32,28 @@ export const routes: Routes = [
     path: 'register',
     component: Register
   },
-  
-  {
-          path: '',
-          component: HomeComponent
-  },
 
-  // Admin Area (Sidebar + Navbar)
+  // Admin section
   {
     path: 'admin',
-    component: Adminlayout,
+    component: AdminLayout,
+
     children: [
-
-
-            {
-          path: '',
-          component: HomeComponent
-        },
-
-      // {
-      //   path: 'dashboard',
-      //   component: DashboardComponent
-      // },
-      // {
-      //   path: 'students',
-      //   component: StudentsComponent
-      // }
+      {
+        path: '',
+        redirectTo: 'students',
+        pathMatch: 'full'
+      },
+      {
+        path: 'students',
+        component: StudentGrid
+      }
     ]
   },
 
+  // Invalid URL
   {
     path: '**',
     redirectTo: ''
   }
-
 ];

@@ -367,13 +367,20 @@ body {
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+
+    /* Two permanently equal columns */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
     gap: 22px;
 }
 
 .field {
     display: flex;
     flex-direction: column;
+
+    /* Long content cannot widen this grid column */
+    min-width: 0;
+    width: 100%;
 }
 
 .full-width {
@@ -399,6 +406,8 @@ body {
 :host ::ng-deep .p-dropdown,
 :host ::ng-deep .p-datepicker {
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
 }
 
 :host ::ng-deep .p-inputtext {
@@ -854,3 +863,82 @@ body {
   margin-top: 5px;
   color: #ef4048;
 }
+
+
+
+
+/* ==================================================
+   CANDIDATE GROUP DROPDOWN
+================================================== */
+
+/*
+ * The dropdown itself must stay inside its grid column.
+ */
+:host ::ng-deep .candidate-group-select {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+}
+
+/*
+ * The selected-value area occupies only the available space.
+ */
+:host ::ng-deep .candidate-group-select .p-select-label {
+    flex: 1 1 auto;
+    width: 0;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/*
+ * Closed dropdown:
+ * Shorten long selected values with three dots.
+ */
+.candidate-selected-text {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/*
+ * Open dropdown:
+ * Display complete option names.
+ * Long names wrap onto another line instead of showing dots.
+ */
+:host ::ng-deep .candidate-group-panel .p-select-option {
+    height: auto;
+    min-height: 42px;
+    white-space: normal;
+    overflow: visible;
+}
+
+.candidate-option-text {
+    display: block;
+    width: 100%;
+    white-space: normal;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    line-height: 1.4;
+}
+
+/*
+ * Highlight the selected option using your company blue.
+/* Selected option */
+:host ::ng-deep
+.candidate-group-panel
+.p-select-option.p-select-option-selected {
+    color: #047857;
+    background-color: #D1FAE5;
+}
+
+/* Selected option when hovered */
+:host ::ng-deep
+.candidate-group-panel
+.p-select-option.p-select-option-selected:hover {
+    color: #065F46;
+    background-color: #A7F3D0;
+}       

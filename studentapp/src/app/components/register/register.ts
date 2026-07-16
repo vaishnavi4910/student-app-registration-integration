@@ -487,10 +487,12 @@ loadCandidateGroup(branchCode: string) {
   onFileSelect(event: any) {
 
     const file = event.target.files[0];
+console.log("file",file);
 
     if (file) {
 
      const allowedTypes = [
+      
   'application/pdf',
   'application/msword', // .doc
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // .docx

@@ -1,0 +1,104 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+}
+
+/* ================= Main Admin Layout ================= */
+
+.admin-layout {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* ================= Sidebar Section ================= */
+
+.sidebar-container {
+  position: relative;
+  z-index: 30;
+  display: block;
+  height: 100vh;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+/* ================= Right Section ================= */
+
+.admin-main {
+  display: flex;
+  min-width: 0;
+  height: 100vh;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Navbar remains visible while the content scrolls */
+app-admin-navbar {
+  position: relative;
+  z-index: 20;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ================= Changing Page Content ================= */
+
+.admin-content {
+  min-width: 0;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #ffffff;
+}
+
+/* ================= Mobile Overlay ================= */
+
+.sidebar-overlay {
+  display: none;
+}
+
+/* ================= Tablet and Mobile ================= */
+
+@media (max-width: 768px) {
+  .sidebar-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1001;
+
+    /* Sidebar stays outside the screen by default */
+    transform: translateX(-100%);
+  }
+
+  /* Display sidebar when hamburger is clicked */
+  .mobile-sidebar-open .sidebar-container {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: block;
+    padding: 0;
+    border: none;
+    background: rgb(35 37 39 / 45%);
+    cursor: pointer;
+  }
+
+  .admin-main {
+    width: 100%;
+  }
+}
+
+/* ================= Small Mobile ================= */
+
+@media (max-width: 480px) {
+  .admin-content {
+    overflow-x: hidden;
+  }
+}

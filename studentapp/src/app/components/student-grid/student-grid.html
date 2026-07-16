@@ -1,0 +1,276 @@
+<div class="students-page">
+
+  <!-- ================= Page Heading ================= -->
+
+  <div class="page-header">
+    <div>
+      <h1>Students</h1>
+      <p>Manage and view student information</p>
+    </div>
+
+    <button
+      pButton
+      type="button"
+      icon="pi pi-plus"
+      label="Add Student"
+      class="add-student-button"
+      (click)="addStudent()">
+    </button>
+  </div>
+
+
+  <!-- ================= Summary Cards ================= -->
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+      <div class="summary-icon students-icon">
+        <i class="pi pi-users"></i>
+      </div>
+
+      <div>
+        <span class="summary-label">Total Students</span>
+        <h2>{{ totalRecords }}</h2>
+      </div>
+    </div>
+
+
+    <div class="summary-card">
+      <div class="summary-icon courses-icon">
+        <i class="pi pi-book"></i>
+      </div>
+
+      <div>
+        <span class="summary-label">Courses on This Page</span>
+        <h2>{{ courseCount }}</h2>
+      </div>
+    </div>
+
+
+    <div class="summary-card">
+      <div class="summary-icon branches-icon">
+        <i class="pi pi-sitemap"></i>
+      </div>
+
+      <div>
+        <span class="summary-label">Branches on This Page</span>
+        <h2>{{ branchCount }}</h2>
+      </div>
+    </div>
+
+
+    <div class="summary-card">
+      <div class="summary-icon active-icon">
+        <i class="pi pi-user"></i>
+      </div>
+
+      <div>
+        <span class="summary-label">Students on This Page</span>
+        <h2>{{ students.length }}</h2>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ================= Student Table Card ================= -->
+
+  <div class="table-card">
+
+    <div class="table-toolbar">
+      <div>
+        <h2>Student List</h2>
+        <p>Student details fetched from the server</p>
+      </div>
+
+      <div class="table-actions">
+
+        <div class="search-wrapper">
+          <i class="pi pi-search"></i>
+
+          <input
+            pInputText
+            type="text"
+            placeholder="Search by student name..."
+            [value]="searchName"
+            (input)="onSearch($event)">
+        </div>
+
+        @if (searchName) {
+          <button
+            pButton
+            type="button"
+            icon="pi pi-times"
+            label="Reset"
+            class="reset-button"
+            (click)="clearSearch()">
+          </button>
+        }
+
+        <button
+          pButton
+          type="button"
+          icon="pi pi-refresh"
+          class="refresh-button"
+          aria-label="Refresh students"
+          (click)="refreshStudents()">
+        </button>
+
+      </div>
+    </div>
+
+
+    <!-- API Error Message -->
+
+    @if (errorMessage) {
+      <div class="api-error">
+        <i class="pi pi-exclamation-circle"></i>
+
+        <span>{{ errorMessage }}</span>
+
+        <button
+          type="button"
+          (click)="refreshStudents()">
+          Try again
+        </button>
+      </div>
+    }
+
+
+    <!-- PrimeNG Student Table -->
+
+    <p-table
+      [value]="students"
+      [lazy]="true"
+      [paginator]="true"
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [loading]="loading"
+      [rowsPerPageOptions]="[5, 10, 20, 50]"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} students"
+      [tableStyle]="{ 'min-width': '1100px' }"
+      styleClass="student-table"
+      (onLazyLoad)="onPageChange($event)">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Student Name</th>
+          <th>Date of Birth</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Gender</th>
+          <th>Course</th>
+          <th>Branch</th>
+          <th>Location</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+
+
+      <ng-template
+        pTemplate="body"
+        let-student
+        let-rowIndex="rowIndex">
+
+        <tr>
+          <td>
+            {{ ((currentPage ) * rows) + rowIndex + 1 }}
+          </td>
+
+          <td>
+            <div class="student-name-cell">
+              <div class="student-avatar">
+                {{ getInitials(student) }}
+              </div>
+
+              <span>{{ getFullName(student) }}</span>
+            </div>
+          </td>
+
+          <td>
+            {{ student.dateOfBirth | date: 'dd MMM yyyy' }}
+          </td>
+
+          <td>
+            <a
+              class="email-link"
+              [href]="'mailto:' + student.email">
+              {{ student.email }}
+            </a>
+          </td>
+
+          <td>
+            {{ student.mobileNumber }}
+          </td>
+
+          <td>
+            <span
+              class="gender-badge"
+              [class.female-badge]="student.gender === 'Female'">
+              {{ student.gender }}
+            </span>
+          </td>
+
+          <td>
+            {{ student.course }}
+          </td>
+
+          <td>
+            {{ student.branch }}
+          </td>
+
+          <td>
+            <div class="location-cell">
+              <span>{{ student.city }}</span>
+              <small>{{ student.state }}, {{ student.country }}</small>
+            </div>
+          </td>
+
+          <td>
+            <button
+              pButton
+              type="button"
+              icon="pi pi-ellipsis-v"
+              class="action-button"
+              aria-label="Student actions"
+              (click)="showActions(student)">
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+
+
+      <!-- Empty Table Message -->
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="10">
+            <div class="empty-state">
+              <i class="pi pi-users"></i>
+              <h3>No students found</h3>
+
+              @if (searchName) {
+                <p>No students matched “{{ searchName }}”.</p>
+
+                <button
+                  pButton
+                  type="button"
+                  label="Clear Search"
+                  class="clear-search-button"
+                  (click)="clearSearch()">
+                </button>
+              } @else {
+                <p>Student records will appear here.</p>
+              }
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+
+  </div>
+
+</div>

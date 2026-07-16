@@ -1,0 +1,49 @@
+<div
+  class="admin-layout"
+  [class.sidebar-collapsed]="sidebarCollapsed"
+  [class.mobile-sidebar-open]="mobileSidebarOpen">
+
+  <!-- ================= Sidebar ================= -->
+
+  <div class="sidebar-container">
+
+    <app-admin-sidebar
+      [collapsed]="sidebarCollapsed"
+      (closeSidebar)="closeMobileSidebar()">
+    </app-admin-sidebar>
+
+  </div>
+
+
+  <!-- Mobile background overlay -->
+
+  @if (mobileSidebarOpen) {
+    <button
+      type="button"
+      class="sidebar-overlay"
+      aria-label="Close sidebar"
+      (click)="closeMobileSidebar()">
+    </button>
+  }
+
+
+  <!-- ================= Right Section ================= -->
+
+  <div class="admin-main">
+
+    <!-- Common admin navbar -->
+
+    <app-admin-navbar
+      (sidebarToggle)="toggleSidebar()">
+    </app-admin-navbar>
+
+
+    <!-- Selected admin page appears here -->
+
+    <main class="admin-content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+</div>
