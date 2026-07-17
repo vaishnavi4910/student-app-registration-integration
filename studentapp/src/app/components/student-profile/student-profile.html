@@ -1,0 +1,519 @@
+<div class="student-profile-page">
+  <!-- ================= Back Button ================= -->
+
+  <button
+    pButton
+    type="button"
+    icon="pi pi-arrow-left"
+    label="Back to Students"
+    class="back-button"
+    (click)="goBack()">
+  </button>
+
+
+  <!-- ================= Page Heading ================= -->
+
+  <div class="page-heading">
+    <h1>Student Profile</h1>
+    <p>View and update student information</p>
+  </div>
+
+
+  <!-- ================= Loading ================= -->
+
+  @if (loading) {
+    <div class="loading-container">
+      <p-progressSpinner
+        strokeWidth="4"
+        ariaLabel="Loading student profile">
+      </p-progressSpinner>
+
+      <p>Loading student details...</p>
+    </div>
+  }
+
+
+  <!-- ================= Error Message ================= -->
+
+  @if (errorMessage) {
+    <div class="message error-message">
+      <i class="pi pi-exclamation-circle"></i>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+
+  <!-- ================= Success Message ================= -->
+
+  @if (successMessage) {
+    <div class="message success-message">
+      <i class="pi pi-check-circle"></i>
+      <span>{{ successMessage }}</span>
+    </div>
+  }
+
+
+  <!-- Display profile only after loading finishes -->
+
+  @if (!loading && studentForm) {
+
+    <!-- ================= Profile Summary ================= -->
+
+    <div class="profile-summary">
+
+      <div class="student-avatar">
+        {{ studentInitials }}
+      </div>
+
+      <div class="student-summary-details">
+        <h2>{{ studentFullName }}</h2>
+
+        <p>
+          <i class="pi pi-envelope"></i>
+          {{ studentForm.get('email')?.value }}
+        </p>
+      </div>
+
+      <div class="student-id">
+        Student ID: {{ studentId }}
+      </div>
+
+    </div>
+
+
+    <!-- ================= Student Form ================= -->
+
+    <div class="profile-card">
+
+      <div class="card-heading">
+        <div>
+          <h2>Personal & Academic Details</h2>
+
+          @if (isEditing) {
+            <p>You can now modify the student information.</p>
+          } @else {
+            <p>Click Edit to modify the student information.</p>
+          }
+        </div>
+
+        @if (isEditing) {
+          <span class="editing-badge">
+            <i class="pi pi-pencil"></i>
+            Editing
+          </span>
+        }
+      </div>
+
+
+      <form
+        [formGroup]="studentForm"
+        (ngSubmit)="updateStudent()">
+
+        <div class="form-grid">
+
+          <!-- First Name -->
+
+          <div class="field">
+            <label for="firstName">
+              First Name
+              <sup>*</sup>
+            </label>
+
+            <input
+              pInputText
+              id="firstName"
+              type="text"
+              formControlName="firstName">
+
+            @if (
+              studentForm.get('firstName')?.touched &&
+              studentForm.get('firstName')?.invalid
+            ) {
+              <small class="field-error">
+                First name is required.
+              </small>
+            }
+          </div>
+
+
+          <!-- Last Name -->
+
+          <div class="field">
+            <label for="lastName">
+              Last Name
+              <sup>*</sup>
+            </label>
+
+            <input
+              pInputText
+              id="lastName"
+              type="text"
+              formControlName="lastName">
+
+            @if (
+              studentForm.get('lastName')?.touched &&
+              studentForm.get('lastName')?.invalid
+            ) {
+              <small class="field-error">
+                Last name is required.
+              </small>
+            }
+          </div>
+
+
+          <!-- Date of Birth -->
+
+          <div class="field">
+            <label for="dateOfBirth">
+              Date of Birth
+              <sup>*</sup>
+            </label>
+
+            <input
+              pInputText
+              id="dateOfBirth"
+              type="date"
+              formControlName="dateOfBirth">
+
+            @if (
+              studentForm.get('dateOfBirth')?.touched &&
+              studentForm.get('dateOfBirth')?.invalid
+            ) {
+              <small class="field-error">
+                Date of birth is required.
+              </small>
+            }
+          </div>
+
+
+          <!-- Gender -->
+
+          <div class="field">
+            <label for="gender">
+              Gender
+              <sup>*</sup>
+            </label>
+
+            <select
+              id="gender"
+              formControlName="gender">
+
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
+            </select>
+
+            @if (
+              studentForm.get('gender')?.touched &&
+              studentForm.get('gender')?.invalid
+            ) {
+              <small class="field-error">
+                Gender is required.
+              </small>
+            }
+          </div>
+
+
+      <!-- ================= Country ================= -->
+
+<div class="field">
+  <label for="country">
+    Country
+    <sup>*</sup>
+  </label>
+
+  <p-select
+    inputId="country"
+    formControlName="country"
+    [options]="countries"
+    optionLabel="countryName"
+    optionValue="countryName"
+    placeholder="Select Country"
+    styleClass="w-full"
+    (onChange)="onCountryChange()">
+  </p-select>
+
+  @if (
+    studentForm.get('country')?.touched &&
+    studentForm.get('country')?.invalid
+  ) {
+    <small class="field-error">
+      Country is required.
+    </small>
+  }
+</div>
+
+
+<!-- ================= State ================= -->
+
+<div class="field">
+  <label for="state">
+    State
+    <sup>*</sup>
+  </label>
+
+  <!-- State options are loaded using the Country ID -->
+  <p-select
+    inputId="state"
+    formControlName="state"
+    [options]="states"
+    optionLabel="stateName"
+    optionValue="stateName"
+    placeholder="Select State"
+    styleClass="w-full"
+    (onChange)="onStateChange()">
+  </p-select>
+
+  @if (
+    studentForm.get('state')?.touched &&
+    studentForm.get('state')?.invalid
+  ) {
+    <small class="field-error">
+      State is required.
+    </small>
+  }
+</div>
+
+
+<!-- ================= City ================= -->
+
+<div class="field">
+  <label for="city">
+    City
+    <sup>*</sup>
+  </label>
+
+  <!-- City options are loaded using the State ID -->
+  <p-select
+    inputId="city"
+    formControlName="city"
+    [options]="cities"
+    optionLabel="cityName"
+    optionValue="cityName"
+    placeholder="Select City"
+    styleClass="w-full">
+  </p-select>
+
+  @if (
+    studentForm.get('city')?.touched &&
+    studentForm.get('city')?.invalid
+  ) {
+    <small class="field-error">
+      City is required.
+    </small>
+  }
+</div>
+          <!-- Zip Code -->
+
+          <div class="field">
+            <label for="zipCode">
+              Zip Code
+              <sup>*</sup>
+            </label>
+
+            <input
+              pInputText
+              id="zipCode"
+              type="text"
+              maxlength="10"
+              formControlName="zipCode">
+
+            @if (
+              studentForm.get('zipCode')?.touched &&
+              studentForm.get('zipCode')?.invalid
+            ) {
+              <small class="field-error">
+                Zip code is required.
+              </small>
+            }
+          </div>
+
+
+          <!-- Email -->
+
+          <div class="field">
+            <label for="email">
+              Email
+              <sup>*</sup>
+            </label>
+
+            <input
+              pInputText
+              id="email"
+              type="email"
+              formControlName="email">
+
+            @if (
+              studentForm.get('email')?.touched &&
+              studentForm.get('email')?.hasError('required')
+            ) {
+              <small class="field-error">
+                Email is required.
+              </small>
+            } @else if (
+              studentForm.get('email')?.touched &&
+              studentForm.get('email')?.hasError('email')
+            ) {
+              <small class="field-error">
+                Enter a valid email address.
+              </small>
+            }
+          </div>
+
+
+          <!-- Mobile Number -->
+
+          <div class="field">
+            <label for="mobileNumber">
+              Mobile Number
+              <sup>*</sup>
+            </label>
+
+            <input
+              pInputText
+              id="mobileNumber"
+              type="text"
+              maxlength="10"
+              formControlName="mobileNumber">
+
+            @if (
+              studentForm.get('mobileNumber')?.touched &&
+              studentForm.get('mobileNumber')?.invalid
+            ) {
+              <small class="field-error">
+                Mobile number is required.
+              </small>
+            }
+          </div>
+
+
+          <!-- Course -->
+<!-- ================= Course ================= -->
+
+<div class="field">
+  <label for="course">
+    Course
+    <sup>*</sup>
+  </label>
+
+ <p-select
+  formControlName="course"
+  [options]="courseList"
+  optionLabel="label"
+  optionValue="label"
+  placeholder="Select Course"
+  (onChange)="onCourseChange()">
+</p-select>
+
+  @if (
+    studentForm.get('course')?.touched &&
+    studentForm.get('course')?.invalid
+  ) {
+    <small class="field-error">
+      Course is required.
+    </small>
+  }
+</div>
+
+          <!-- Branch -->
+
+         <!-- ================= Branch ================= -->
+
+<div class="field">
+  <label for="branch">
+    Branch
+    <sup>*</sup>
+  </label>
+
+  <p-select
+  formControlName="branch"
+  [options]="branchList"
+  optionLabel="label"
+  optionValue="label"
+  placeholder="Select Branch"
+  (onChange)="onBranchChange()">
+</p-select>
+  @if (
+    studentForm.get('branch')?.touched &&
+    studentForm.get('branch')?.invalid
+  ) {
+    <small class="field-error">
+      Branch is required.
+    </small>
+  }
+</div>
+          
+
+                <!-- ================= Candidate Group ================= -->
+
+<div class="field">
+  <label for="candidateGroup">
+    Candidate Group
+    <sup>*</sup>
+  </label>
+<p-select
+  formControlName="candidateGroup"
+  [options]="candidateGroupList"
+  optionLabel="label"
+  optionValue="label"
+  placeholder="Select Candidate Group">
+</p-select>
+
+  @if (
+    studentForm.get('candidateGroup')?.touched &&
+    studentForm.get('candidateGroup')?.invalid
+  ) {
+    <small class="field-error">
+      Candidate Group is required.
+    </small>
+  }
+</div>
+
+        </div>
+
+
+        <!-- ================= Action Buttons ================= -->
+
+        <div class="form-actions">
+
+          <button
+            pButton
+            type="button"
+            icon="pi pi-pencil"
+            label="Edit"
+            class="edit-button"
+            [disabled]="isEditing"
+            (click)="enableEditing()">
+          </button>
+
+          <button
+            pButton
+            type="submit"
+            icon="pi pi-check"
+            label="Update"
+            class="update-button"
+            [loading]="saving"
+            [disabled]="!isEditing || saving">
+          </button>
+
+          @if (isEditing) {
+            <button
+              pButton
+              type="button"
+              icon="pi pi-times"
+              label="Cancel"
+              class="cancel-button"
+              (click)="cancelEditing()">
+            </button>
+          }
+
+        </div>
+
+      </form>
+
+    </div>
+
+  }
+
+</div> 

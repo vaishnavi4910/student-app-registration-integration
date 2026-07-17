@@ -163,6 +163,7 @@
           <th>Gender</th>
           <th>Course</th>
           <th>Branch</th>
+          <th>Candidate Group</th>
           <th>Location</th>
           <th>Actions</th>
         </tr>
@@ -174,9 +175,15 @@
         let-student
         let-rowIndex="rowIndex">
 
-        <tr>
+          <!-- Clicking this row opens that student's profile page -->
+            <tr
+              class="clickable-student-row"
+              tabindex="0"
+              (click)="openStudentProfile(student)"
+              (keydown.enter)="openStudentProfile(student)">
+
           <td>
-            {{ ((currentPage ) * rows) + rowIndex + 1 }}
+            {{ ((currentPage) * rows) + rowIndex + 1 }}
           </td>
 
           <td>
@@ -196,7 +203,9 @@
           <td>
             <a
               class="email-link"
-              [href]="'mailto:' + student.email">
+              [href]="'mailto:' + student.email"
+               (click)="$event.stopPropagation()">
+               <!-- Without stopPropagation(), clicking the email would also open the profile page. -->
               {{ student.email }}
             </a>
           </td>
@@ -220,6 +229,12 @@
           <td>
             {{ student.branch }}
           </td>
+          <!-- Candidate Group -->
+          <td>
+            <span class="candidate-group-cell">
+              {{ student.candidateGroup || '—' }}
+            </span>
+          </td>
 
           <td>
             <div class="location-cell">
@@ -235,7 +250,8 @@
               icon="pi pi-ellipsis-v"
               class="action-button"
               aria-label="Student actions"
-              (click)="showActions(student)">
+              
+              (click)="$event.stopPropagation(); showActions(student)">
             </button>
           </td>
         </tr>

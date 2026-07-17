@@ -5,20 +5,19 @@ import { LoginComponent } from './components/login/login';
 import { Register } from './components/register/register';
 import { StudentGrid } from './components/student-grid/student-grid';
 
+// Student profile component
+import { StudentProfile } from './components/student-profile/student-profile';
+
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
 
 export const routes: Routes = [
 
-  // Temporarily open the Student Grid instead of Home
-  // {
-  //   path: '',
-  //   redirectTo: 'admin/students',
-  //   pathMatch: 'full'
-  // },
-   {
+  // Default page
+  {
     path: '',
-    component: HomeComponent,
+    component: HomeComponent
   },
+
   // Public pages
   {
     path: 'home',
@@ -31,6 +30,14 @@ export const routes: Routes = [
   {
     path: 'register',
     component: Register
+  },
+
+  // Student profile page
+  // :id receives the selected student's ID
+  // Example: /student-profile/49
+  {
+    path: 'student-profile/:id',
+    component: StudentProfile
   },
 
   // Admin section

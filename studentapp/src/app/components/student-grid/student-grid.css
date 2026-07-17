@@ -431,3 +431,33 @@
     text-align: center;
   }
 }
+
+/* Makes each student record appear clickable */
+:host ::ng-deep .student-table .clickable-student-row {
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Highlights the row when the mouse is over it */
+:host ::ng-deep .student-table .clickable-student-row:hover {
+  background-color: #f1f7fc;
+}
+
+/* Keyboard focus style */
+:host ::ng-deep .student-table .clickable-student-row:focus {
+  outline: 2px solid #2368a0;
+  outline-offset: -2px;
+  background-color: #f1f7fc;
+}
+
+/* Keep table cells on the same highlighted background */
+:host ::ng-deep
+.student-table
+.clickable-student-row:hover > td {
+  background-color: #f1f7fc;
+}
+
+
+

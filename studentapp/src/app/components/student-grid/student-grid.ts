@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TableModule } from 'primeng/table';
-
+import { Router } from '@angular/router';
 interface Student {
   id?: number;
   firstName: string;
@@ -21,6 +21,8 @@ interface Student {
   mobileNumber: string;
   course: string;
   branch: string;
+  candidateGroup: string;
+
 }
 
 @Component({
@@ -67,7 +69,10 @@ export class StudentGrid implements OnInit {
   private readonly studentsApiUrl =
     'http://172.17.12.50:8082/reborn/candidates/getall';
 
-  constructor(private http: HttpClient) {}
+constructor(
+  private http: HttpClient,
+  private router: Router
+) {}
 
   ngOnInit(): void {
     // Do not call loadStudents() here because p-table calls
@@ -219,7 +224,23 @@ export class StudentGrid implements OnInit {
 
     return `${firstInitial}${lastInitial}`.toUpperCase();
   }
+/**
+ * Opens the selected student's profile page.
+ */
+openStudentProfile(student: Student): void {
+  // Do not navigate if the backend did not provide an ID
+  if (student.id == null) {
+    console.error('Student ID is unavailable:', student);
+    return;
+  }
 
+  console.log('Opening student profile with ID:', student.id);
+
+  this.router.navigate([
+    '/student-profile',
+    student.id
+  ]);
+}
   /**
    * Opens the Add Student page/dialog later.
    */
